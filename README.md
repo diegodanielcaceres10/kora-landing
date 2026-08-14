@@ -1,2 +1,2 @@
 # kora-landing
-Kora's public landing page: randomly draw balanced football teams, name them, and generate a shareable image — the first step of a brand that will grow into court rentals and tournament organization.
+Kora Landing — Kora's free entry point. Add your players, draw the teams, name them, and share the result as an image. The first product in an ecosystem that will grow to include court rentals and tournament organization.
