@@ -1,6 +1,6 @@
 // src/App.tsx
 import { useDraftWizard } from "./features/draft/hooks/useDraftWizard";
-import { StepWelcome } from "./features/draft/steps/StepWelcome";
+import { StepWelcome } from "./features/draft/steps/welcome/welcome";
 import { StepDraw } from "./features/draft/steps/StepDraw";
 import { StepExport } from "./features/draft/steps/StepExport";
 
