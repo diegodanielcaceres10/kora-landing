@@ -1,15 +1,22 @@
 import { useState, useCallback } from "react";
-import type { WizardStep, DraftConfig, Player } from "../draft.types";
-import { DEFAULT_TEAM_COUNT, DEFAULT_TEAMS } from "../draft.constants";
+import type { WizardStep, DraftConfig, Player, Team } from "../draft.types";
+import {
+  DEFAULT_TEAM_COUNT,
+  DEFAULT_PLAYERS_PER_TEAM,
+  TEAM_COLOR_PALETTE,
+} from "../draft.constants";
+
+const buildTeams = (count: number): Team[] =>
+  Array.from({ length: count }, (_, i) => ({
+    id: `team-${i}`,
+    name: `Equipo ${String.fromCharCode(65 + i)}`,
+    color: TEAM_COLOR_PALETTE[i % TEAM_COLOR_PALETTE.length],
+  }));
 
 const createEmptyConfig = (): DraftConfig => ({
   teamCount: DEFAULT_TEAM_COUNT,
-  playersPerTeam: 0,
-  teams: DEFAULT_TEAMS.map((t, i) => ({
-    id: `team-${i}`,
-    name: i === 0 ? "Equipo A" : "Equipo B",
-    color: t.color,
-  })),
+  playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
+  teams: buildTeams(DEFAULT_TEAM_COUNT),
   players: [],
 });
 
@@ -19,7 +26,8 @@ export function useDraftWizard() {
 
   const goNext = useCallback(() => {
     setStep((current) => {
-      if (current === "welcome") return "draw";
+      if (current === "welcome") return "setup";
+      if (current === "setup") return "draw";
       if (current === "draw") return "export";
       return current;
     });
@@ -28,23 +36,57 @@ export function useDraftWizard() {
   const goBack = useCallback(() => {
     setStep((current) => {
       if (current === "export") return "draw";
-      if (current === "draw") return "welcome";
+      if (current === "draw") return "setup";
+      if (current === "setup") return "welcome";
       return current;
     });
+  }, []);
+
+  const setTeamCount = useCallback((count: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      teamCount: count,
+      teams: buildTeams(count),
+    }));
   }, []);
 
   const setPlayersPerTeam = useCallback((count: number) => {
     setConfig((prev) => ({ ...prev, playersPerTeam: count }));
   }, []);
 
-  const setPlayerNames = useCallback((names: string[]) => {
+  const addPlayer = useCallback((name: string) => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+
     setConfig((prev) => ({
       ...prev,
-      players: names.map((name, i) => ({
-        id: `player-${i}`,
-        name,
-        teamId: null,
-      })),
+      players: [
+        ...prev.players,
+        {
+          id: `player-${Date.now()}-${prev.players.length}`,
+          name: trimmed,
+          teamId: null,
+          isGoalkeeper: false,
+        },
+      ],
+    }));
+  }, []);
+
+  const removePlayer = useCallback((id: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      players: prev.players.filter((player) => player.id !== id),
+    }));
+  }, []);
+
+  const toggleGoalkeeper = useCallback((id: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      players: prev.players.map((player) =>
+        player.id === id
+          ? { ...player, isGoalkeeper: !player.isGoalkeeper }
+          : player,
+      ),
     }));
   }, []);
 
@@ -69,8 +111,11 @@ export function useDraftWizard() {
     config,
     goNext,
     goBack,
+    setTeamCount,
     setPlayersPerTeam,
-    setPlayerNames,
+    addPlayer,
+    removePlayer,
+    toggleGoalkeeper,
     drawTeams,
     reset,
   };

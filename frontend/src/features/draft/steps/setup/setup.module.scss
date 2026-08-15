@@ -1,0 +1,324 @@
+@use "../../../../styles/tokens" as tokens;
+
+.setup {
+  min-height: 100svh;
+  width: 100%;
+  background: var(--kora-ink);
+  color: var(--kora-chalk);
+  display: flex;
+  justify-content: center;
+
+  &__content {
+    width: 100%;
+    max-width: 560px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-8) var(--space-6);
+    box-sizing: border-box;
+    gap: var(--space-6);
+  }
+
+  &__progress {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  &__dot {
+    flex: 1;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: rgba(244, 246, 239, 0.15);
+    transition: background-color 200ms ease;
+  }
+
+  &__dot--done {
+    background: var(--kora-turf);
+  }
+
+  &__dot--active {
+    background: var(--kora-bib-gold);
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: var(--space-4);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--kora-turf);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 8vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--kora-chalk);
+  }
+
+  &__description {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--kora-chalk);
+    opacity: 0.75;
+  }
+
+  // Chips (opciones predeterminadas)
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  &__chip {
+    min-width: 56px;
+    height: 48px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  &__chip--active {
+    background: var(--kora-turf);
+    border-color: var(--kora-turf);
+    color: var(--kora-chalk);
+  }
+
+  // Stepper manual (+/-)
+  &__stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    margin-top: var(--space-4);
+    padding: var(--space-5) 0;
+  }
+
+  &__stepperButton {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--kora-turf);
+    background: transparent;
+    color: var(--kora-turf);
+    font-family: var(--font-body);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  &__stepperButton:hover:not(:disabled) {
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+  }
+
+  &__stepperButton:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &__stepperValue {
+    min-width: 3ch;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--kora-chalk);
+  }
+
+  // Formulario de alta de jugadores
+  &__playerForm {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  &__input {
+    flex: 1;
+    height: 48px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: rgba(244, 246, 239, 0.05);
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+  }
+
+  &__input:focus {
+    outline: none;
+    border-color: var(--kora-turf);
+  }
+
+  &__input::placeholder {
+    color: rgba(244, 246, 239, 0.45);
+  }
+
+  &__addButton {
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--kora-turf);
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  &__counter {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.6;
+  }
+
+  &__counter--complete {
+    color: var(--kora-bib-gold);
+    opacity: 1;
+  }
+
+  // Lista de jugadores acumulados
+  &__playerList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  &__playerItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: rgba(244, 246, 239, 0.05);
+  }
+
+  &__playerName {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--kora-chalk);
+  }
+
+  &__goalkeeperButton {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition:
+      opacity 150ms ease,
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  &__goalkeeperButton--active {
+    opacity: 1;
+    border-color: var(--kora-bib-gold);
+    background: rgba(255, 182, 39, 0.15);
+  }
+
+  &__removeButton {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--kora-chalk);
+    opacity: 0.5;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__removeButton:hover {
+    opacity: 1;
+    color: var(--kora-bib-coral);
+  }
+
+  // Acciones (Volver / Continuar)
+  &__actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-4);
+  }
+
+  &__secondaryButton,
+  &__primaryButton {
+    flex: 1;
+    height: 50px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  &__secondaryButton {
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    color: var(--kora-chalk);
+  }
+
+  &__secondaryButton:hover {
+    border-color: var(--kora-chalk);
+  }
+
+  &__primaryButton {
+    border: 1px solid var(--kora-turf);
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+  }
+
+  &__primaryButton:hover:not(:disabled) {
+    transform: translateY(-3px);
+  }
+
+  &__primaryButton:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+  }
+}

@@ -1,8 +1,9 @@
 // src/App.tsx
 import { useDraftWizard } from "./features/draft/hooks/useDraftWizard";
 import { StepWelcome } from "./features/draft/steps/welcome/welcome";
-import { StepDraw } from "./features/draft/steps/StepDraw";
-import { StepExport } from "./features/draft/steps/StepExport";
+import { StepSetup } from "./features/draft/steps/setup/setup";
+import { StepDraw } from "./features/draft/steps/draw/draw";
+import { StepExport } from "./features/draft/steps/export/export";
 
 function App() {
   const wizard = useDraftWizard();
@@ -11,12 +12,24 @@ function App() {
     case "welcome":
       return <StepWelcome onStart={wizard.goNext} />;
 
+    case "setup":
+      return (
+        <StepSetup
+          config={wizard.config}
+          setTeamCount={wizard.setTeamCount}
+          setPlayersPerTeam={wizard.setPlayersPerTeam}
+          addPlayer={wizard.addPlayer}
+          removePlayer={wizard.removePlayer}
+          toggleGoalkeeper={wizard.toggleGoalkeeper}
+          onNext={wizard.goNext}
+          onBack={wizard.goBack}
+        />
+      );
+
     case "draw":
       return (
         <StepDraw
           config={wizard.config}
-          setPlayersPerTeam={wizard.setPlayersPerTeam}
-          setPlayerNames={wizard.setPlayerNames}
           drawTeams={wizard.drawTeams}
           onNext={wizard.goNext}
           onBack={wizard.goBack}

@@ -1,9 +1,7 @@
-import type { DraftConfig } from "../draft.types";
+import type { DraftConfig } from "../../draft.types";
 
 interface StepDrawProps {
   config: DraftConfig;
-  setPlayersPerTeam: (count: number) => void;
-  setPlayerNames: (names: string[]) => void;
   drawTeams: () => void;
   onNext: () => void;
   onBack: () => void;

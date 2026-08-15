@@ -1,4 +1,4 @@
-import type { DraftConfig } from "../draft.types";
+import type { DraftConfig } from "../../draft.types";
 
 interface StepExportProps {
   config: DraftConfig;
