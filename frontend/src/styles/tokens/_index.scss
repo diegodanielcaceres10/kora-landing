@@ -1,0 +1,36 @@
+// styles/tokens/_index.scss
+@forward "colors";
+@forward "typography";
+@forward "spacing";
+
+@use "colors";
+@use "typography";
+@use "spacing";
+
+:root {
+  // Colors
+  --kora-pitch: #{colors.$kora-pitch};
+  --kora-turf: #{colors.$kora-turf};
+  --kora-chalk: #{colors.$kora-chalk};
+  --kora-ink: #{colors.$kora-ink};
+  --kora-bib-gold: #{colors.$kora-bib-gold};
+  --kora-bib-coral: #{colors.$kora-bib-coral};
+
+  // Typography
+  --font-display: #{typography.$font-display};
+  --font-body: #{typography.$font-body};
+  --font-mono: #{typography.$font-mono};
+
+  // Spacing
+  --space-1: #{spacing.$space-1};
+  --space-2: #{spacing.$space-2};
+  --space-3: #{spacing.$space-3};
+  --space-4: #{spacing.$space-4};
+  --space-5: #{spacing.$space-5};
+  --space-6: #{spacing.$space-6};
+  --space-8: #{spacing.$space-8};
+
+  --radius-sm: #{spacing.$radius-sm};
+  --radius-md: #{spacing.$radius-md};
+  --radius-pill: #{spacing.$radius-pill};
+}
