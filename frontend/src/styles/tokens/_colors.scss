@@ -5,7 +5,15 @@ $kora-pitch: #143028;
 $kora-turf: #2e7d53;
 $kora-chalk: #f4f6ef;
 $kora-ink: #051f19;
+
 $kora-bib-gold: #ffb627;
 $kora-bib-coral: #ff5a36;
 $kora-bib-sky: #4da6ff;
 $kora-bib-violet: #b18aff;
+$kora-bib-green: #079f68;
+
+$kora-gradient-primary: linear-gradient(
+  90deg,
+  $kora-bib-gold 0%,
+  $kora-bib-green 50%
+);

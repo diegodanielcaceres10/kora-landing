@@ -21,6 +21,19 @@ body {
 
 button {
   font-family: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+button:active,
+button:hover {
+  outline: 0;
+}
+
+:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 img {
