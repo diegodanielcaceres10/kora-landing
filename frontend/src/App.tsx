@@ -30,6 +30,10 @@ function App() {
       return (
         <StepDraw
           config={wizard.config}
+          setAssignmentMode={wizard.setAssignmentMode}
+          resetAssignments={wizard.resetAssignments}
+          assignPlayerToTeam={wizard.assignPlayerToTeam}
+          unassignPlayer={wizard.unassignPlayer}
           drawTeams={wizard.drawTeams}
           onNext={wizard.goNext}
           onBack={wizard.goBack}

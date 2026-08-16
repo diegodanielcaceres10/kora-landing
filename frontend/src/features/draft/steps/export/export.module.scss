@@ -1,0 +1,220 @@
+.export {
+  min-height: 100svh;
+  width: 100%;
+  background: var(--kora-ink);
+  color: var(--kora-chalk);
+  display: flex;
+  justify-content: center;
+
+  &__content {
+    width: 100%;
+    max-width: 640px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-8) var(--space-6);
+    box-sizing: border-box;
+    gap: var(--space-4);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--kora-turf);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 8vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  &__preview {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-4) 0;
+    overflow-x: auto;
+  }
+
+  &__error {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--kora-bib-coral);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-4);
+  }
+
+  &__secondaryButton,
+  &__primaryButton {
+    flex: 1;
+    height: 50px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  &__secondaryButton {
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    color: var(--kora-chalk);
+  }
+
+  &__secondaryButton:hover {
+    border-color: var(--kora-chalk);
+  }
+
+  &__primaryButton {
+    border: 1px solid var(--kora-turf);
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+  }
+
+  &__primaryButton:hover:not(:disabled) {
+    transform: translateY(-3px);
+  }
+
+  &__primaryButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  &__resetButton {
+    align-self: center;
+    border: none;
+    background: transparent;
+    color: var(--kora-chalk);
+    opacity: 0.5;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: var(--space-2);
+  }
+
+  &__resetButton:hover {
+    opacity: 0.8;
+  }
+}
+
+// Tarjeta exportable — colores en hex (no CSS vars) para que la imagen
+// generada no dependa del documento donde se capture.
+.card {
+  width: 480px;
+  background: #0a2a20;
+  border: 1px solid rgba(244, 246, 239, 0.15);
+  border-radius: 16px;
+  padding: 32px;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__brand {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.04em;
+    color: #f4f6ef;
+    line-height: 1;
+  }
+
+  &__subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2e7d53;
+  }
+
+  &__teams {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  &__team {
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(244, 246, 239, 0.05);
+  }
+
+  &__teamHeader {
+    padding: 10px 14px;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: #0a2a20;
+  }
+
+  &__teamHeader--gold {
+    background: #ffb627;
+  }
+
+  &__teamHeader--coral {
+    background: #ff5a36;
+  }
+
+  &__teamHeader--sky {
+    background: #4da6ff;
+  }
+
+  &__teamHeader--violet {
+    background: #b18aff;
+  }
+
+  &__roster {
+    list-style: none;
+    margin: 0;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #f4f6ef;
+  }
+
+  &__goalkeeperBadge {
+    font-size: 0.85rem;
+  }
+}

@@ -22,11 +22,12 @@ export function StepPlayerList({
   onBack,
 }: StepPlayerListProps) {
   const [name, setName] = useState("");
-  const canContinue = totalNeeded > 0 && players.length >= totalNeeded;
+  const isComplete = totalNeeded > 0 && players.length >= totalNeeded;
+  const canAdd = totalNeeded === 0 || players.length < totalNeeded;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (!name.trim()) return;
+    if (!name.trim() || !canAdd) return;
     onAdd(name);
     setName("");
   };
@@ -43,11 +44,18 @@ export function StepPlayerList({
         <input
           type="text"
           className={styles.setup__input}
-          placeholder="Nombre del jugador"
+          placeholder={
+            canAdd ? "Nombre del jugador" : "Ya completaste la lista"
+          }
           value={name}
           onChange={(event) => setName(event.target.value)}
+          disabled={!canAdd}
         />
-        <button type="submit" className={styles.setup__addButton}>
+        <button
+          type="submit"
+          className={styles.setup__addButton}
+          disabled={!canAdd}
+        >
           Agregar
         </button>
       </form>
@@ -55,7 +63,7 @@ export function StepPlayerList({
       <p
         className={[
           styles.setup__counter,
-          canContinue ? styles["setup__counter--complete"] : "",
+          isComplete ? styles["setup__counter--complete"] : "",
         ].join(" ")}
       >
         {players.length} / {totalNeeded} jugadores
@@ -103,7 +111,7 @@ export function StepPlayerList({
           type="button"
           className={styles.setup__primaryButton}
           onClick={onNext}
-          disabled={!canContinue}
+          disabled={!isComplete}
         >
           Continuar
         </button>

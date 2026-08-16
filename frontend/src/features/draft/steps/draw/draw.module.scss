@@ -1,0 +1,334 @@
+@use "../../../../styles/tokens" as tokens;
+
+.draw {
+  min-height: 100svh;
+  width: 100%;
+  background: var(--kora-ink);
+  color: var(--kora-chalk);
+  display: flex;
+  justify-content: center;
+
+  &__content {
+    width: 100%;
+    max-width: 720px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-8) var(--space-6);
+    box-sizing: border-box;
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: var(--space-4);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--kora-turf);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 8vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--kora-chalk);
+  }
+
+  &__description {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--kora-chalk);
+    opacity: 0.75;
+  }
+
+  // Elección de modo (sorteo / manual)
+  &__modeGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  &__modeCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.2);
+    background: rgba(244, 246, 239, 0.04);
+    color: var(--kora-chalk);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 150ms ease,
+      transform 150ms ease,
+      background-color 150ms ease;
+  }
+
+  &__modeCard:hover {
+    border-color: var(--kora-turf);
+    background: rgba(46, 125, 83, 0.12);
+    transform: translateY(-3px);
+  }
+
+  &__modeIcon {
+    font-size: 1.75rem;
+  }
+
+  &__modeName {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  &__modeHint {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    opacity: 0.7;
+  }
+
+  // Botón de sorteo
+  &__drawButton {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-6);
+    height: 56px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--kora-turf);
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 150ms ease;
+  }
+
+  &__drawButton:hover {
+    transform: translateY(-3px);
+  }
+
+  &__redrawButton {
+    align-self: flex-start;
+    border: none;
+    background: transparent;
+    color: var(--kora-bib-gold);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  // Pool de "sin asignar" (drag and drop)
+  &__pool {
+    border: 1px dashed rgba(244, 246, 239, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+
+  &__pool--over {
+    border-color: var(--kora-bib-gold);
+    background: rgba(255, 182, 39, 0.08);
+  }
+
+  &__poolLabel {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  &__poolList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    min-height: 40px;
+  }
+
+  &__poolEmpty {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    opacity: 0.5;
+  }
+
+  &__playerChip {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: rgba(244, 246, 239, 0.1);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    cursor: grab;
+    user-select: none;
+  }
+
+  &__playerChip:active {
+    cursor: grabbing;
+  }
+
+  // Columnas de equipo
+  &__teamsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+  }
+
+  &__teamColumn {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    background: rgba(244, 246, 239, 0.04);
+    border: 1px solid transparent;
+    overflow: hidden;
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+
+  &__teamColumn--over {
+    border-color: var(--kora-bib-gold);
+    background: rgba(255, 182, 39, 0.08);
+  }
+
+  &__teamHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--kora-ink);
+  }
+
+  &__teamHeader--gold {
+    background: var(--kora-bib-gold);
+  }
+
+  &__teamHeader--coral {
+    background: var(--kora-bib-coral);
+  }
+
+  &__teamHeader--sky {
+    background: var(--kora-bib-sky);
+  }
+
+  &__teamHeader--violet {
+    background: var(--kora-bib-violet);
+  }
+
+  &__teamCount {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    opacity: 0.75;
+  }
+
+  &__teamRoster {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-height: 64px;
+    flex: 1;
+  }
+
+  &__rosterItem {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    cursor: grab;
+    user-select: none;
+  }
+
+  &__rosterItem:active {
+    cursor: grabbing;
+  }
+
+  &__teamEmpty {
+    font-family: var(--font-body);
+    font-size: var(--font-size-xs);
+    opacity: 0.4;
+  }
+
+  &__teamFullNote {
+    margin: 0;
+    padding: 0 var(--space-4) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--kora-turf);
+  }
+
+  // Acciones
+  &__actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-6);
+  }
+
+  &__secondaryButton,
+  &__primaryButton {
+    flex: 1;
+    height: 50px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  &__secondaryButton {
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    color: var(--kora-chalk);
+  }
+
+  &__secondaryButton:hover {
+    border-color: var(--kora-chalk);
+  }
+
+  &__primaryButton {
+    border: 1px solid var(--kora-turf);
+    background: var(--kora-turf);
+    color: var(--kora-chalk);
+  }
+
+  &__primaryButton:hover:not(:disabled) {
+    transform: translateY(-3px);
+  }
+
+  &__primaryButton:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+  }
+}

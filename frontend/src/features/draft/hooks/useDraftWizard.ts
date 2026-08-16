@@ -1,5 +1,11 @@
 import { useState, useCallback } from "react";
-import type { WizardStep, DraftConfig, Player, Team } from "../draft.types";
+import type {
+  WizardStep,
+  DraftConfig,
+  Player,
+  Team,
+  AssignmentMode,
+} from "../draft.types";
 import {
   DEFAULT_TEAM_COUNT,
   DEFAULT_PLAYERS_PER_TEAM,
@@ -18,6 +24,7 @@ const createEmptyConfig = (): DraftConfig => ({
   playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
   teams: buildTeams(DEFAULT_TEAM_COUNT),
   players: [],
+  assignmentMode: null,
 });
 
 export function useDraftWizard() {
@@ -90,6 +97,45 @@ export function useDraftWizard() {
     }));
   }, []);
 
+  const setAssignmentMode = useCallback((mode: AssignmentMode) => {
+    setConfig((prev) => ({ ...prev, assignmentMode: mode }));
+  }, []);
+
+  const resetAssignments = useCallback(() => {
+    setConfig((prev) => ({
+      ...prev,
+      assignmentMode: null,
+      players: prev.players.map((player) => ({ ...player, teamId: null })),
+    }));
+  }, []);
+
+  const assignPlayerToTeam = useCallback((playerId: string, teamId: string) => {
+    setConfig((prev) => {
+      const teamCapacity = prev.playersPerTeam;
+      const currentTeamSize = prev.players.filter(
+        (p) => p.teamId === teamId && p.id !== playerId,
+      ).length;
+
+      if (currentTeamSize >= teamCapacity) return prev;
+
+      return {
+        ...prev,
+        players: prev.players.map((player) =>
+          player.id === playerId ? { ...player, teamId } : player,
+        ),
+      };
+    });
+  }, []);
+
+  const unassignPlayer = useCallback((playerId: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      players: prev.players.map((player) =>
+        player.id === playerId ? { ...player, teamId: null } : player,
+      ),
+    }));
+  }, []);
+
   const drawTeams = useCallback(() => {
     setConfig((prev) => {
       const shuffled = [...prev.players].sort(() => Math.random() - 0.5);
@@ -116,6 +162,10 @@ export function useDraftWizard() {
     addPlayer,
     removePlayer,
     toggleGoalkeeper,
+    setAssignmentMode,
+    resetAssignments,
+    assignPlayerToTeam,
+    unassignPlayer,
     drawTeams,
     reset,
   };

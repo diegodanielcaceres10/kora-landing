@@ -2,6 +2,10 @@ export type WizardStep = "welcome" | "setup" | "draw" | "export";
 
 export type SetupSubStep = "teams" | "playersPerTeam" | "players";
 
+export type DrawSubStep = "mode" | "assign";
+
+export type AssignmentMode = "random" | "manual";
+
 export type TeamColor = "gold" | "coral" | "sky" | "violet";
 
 export interface Player {
@@ -22,4 +26,5 @@ export interface DraftConfig {
   playersPerTeam: number;
   teams: Team[];
   players: Player[];
+  assignmentMode: AssignmentMode | null;
 }
