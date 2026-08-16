@@ -1,4 +1,6 @@
 import styles from "./welcome.module.scss";
+import koraLogo from "../../../../assets/kora-logo/kora-logo.png";
+import koraBibs from "../../../../assets/illustrations/kora-bibs.png";
 
 interface StepWelcomeProps {
   onStart: () => void;
@@ -9,7 +11,7 @@ export function StepWelcome({ onStart }: StepWelcomeProps) {
     <main className={styles.welcome}>
       <div className={styles.welcome__content}>
         <div className={styles.welcome__brand}>
-          <img src="/src/assets/kora-logo/kora-logo.png" alt="" />
+          <img src={koraLogo} alt="Kora Logo" />
         </div>
 
         <section className={styles.welcome__hero}>
@@ -26,7 +28,7 @@ export function StepWelcome({ onStart }: StepWelcomeProps) {
         </section>
 
         <div className={styles.welcome__illustration} aria-hidden="true">
-          <img src="/src/assets/illustrations/kora-bibs.png" alt="" />
+          <img src={koraBibs} alt="Kora Welcome Illustration" />
         </div>
 
         <button
