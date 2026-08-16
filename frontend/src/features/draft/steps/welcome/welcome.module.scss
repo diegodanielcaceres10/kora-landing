@@ -59,6 +59,7 @@
   &__menu {
     display: none;
     color: var(--kora-chalk);
+    z-index: 999;
 
     @include ds.md {
       display: flex;
@@ -82,13 +83,13 @@
       font-size: var(--font-size-2xl);
       width: 100%;
       height: 100vh;
-      background: rgba(31, 65, 55, 0.9);
+      background: rgba(31, 65, 55, 0.95);
       backdrop-filter: blur(1rem);
       -webkit-backdrop-filter: blur(1rem);
       inset: 0;
       transform: translateY(-100%);
 
-      &-open {
+      &--open {
         @include ds.md {
           transform: translateY(0);
         }
