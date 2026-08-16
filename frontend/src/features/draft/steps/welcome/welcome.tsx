@@ -8,9 +8,9 @@ export function StepWelcome({ onStart }: StepWelcomeProps) {
   return (
     <main className={styles.welcome}>
       <div className={styles.welcome__content}>
-        <header className={styles.welcome__brand}>
-          <span className={styles.welcome__name}>Kora</span>
-        </header>
+        <div className={styles.welcome__brand}>
+          <img src="/src/assets/kora-logo/kora-logo.png" alt="" />
+        </div>
 
         <section className={styles.welcome__hero}>
           <h1 className={styles.welcome__title}>
