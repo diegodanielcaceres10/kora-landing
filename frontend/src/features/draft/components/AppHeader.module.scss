@@ -75,7 +75,8 @@
   &__link {
     color: var(--kora-chalk);
     opacity: 0.75;
-    cursor: default;
+    cursor: pointer;
+    text-decoration: none;
 
     &:hover {
       opacity: 1;

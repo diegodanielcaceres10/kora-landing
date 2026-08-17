@@ -2,10 +2,16 @@ import { useState } from "react";
 import styles from "./AppHeader.module.scss";
 import koraIcon from "/favicon.png";
 
-const NAV_LINKS = ["Inicio", "Cómo funciona", "FAQ", "Sobre Kora"];
+const NAV_LINKS = [
+  { label: "Inicio", href: "#inicio" },
+  { label: "Cómo funciona", href: "#tutorial" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Sobre Kora", href: "#sobre-kora" },
+];
 
 export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState(NAV_LINKS[0].href);
 
   return (
     <header className={styles.nav}>
@@ -33,17 +39,21 @@ export function AppHeader() {
             isMenuOpen ? styles["nav__links--open"] : "",
           ].join(" ")}
         >
-          {NAV_LINKS.map((link, i) => (
-            <span
-              key={link}
+          {NAV_LINKS.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
               className={[
                 styles.nav__link,
-                i === 0 ? styles["nav__link--active"] : "",
+                activeLink === href ? styles["nav__link--active"] : "",
               ].join(" ")}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setActiveLink(href);
+                setIsMenuOpen(false);
+              }}
             >
-              {link}
-            </span>
+              {label}
+            </a>
           ))}
         </nav>
 

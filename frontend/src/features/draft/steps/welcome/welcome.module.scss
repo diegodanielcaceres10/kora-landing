@@ -19,6 +19,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  scroll-behavior: smooth;
 }
 
 .welcome {
@@ -117,7 +118,6 @@
     border: 1px solid rgba(244, 246, 239, 0.3);
     background: transparent;
     color: var(--kora-chalk);
-    cursor: default;
   }
 
   &__stats {
@@ -149,11 +149,89 @@
   }
 }
 
+.tutorial {
+  width: 90%;
+  max-width: var(--page-max-width);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-7) var(--space-4);
+  box-sizing: border-box;
+  margin: var(--space-8) var(--space-4);
+  scroll-margin-top: 120px;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  &__eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--kora-chalk);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+
+    @include ds.md {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item {
+    min-height: 220px;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.1);
+    background: rgba(5, 31, 25, 0.36);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  &__number {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--kora-bib-gold);
+    opacity: 0.75;
+  }
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(72, 161, 87, 0.18);
+    color: var(--kora-bib-green);
+    display: grid;
+    place-items: center;
+    font-size: var(--font-size-lg);
+  }
+}
+
 .faq {
   width: 90%;
-  max-width: 1100px;
+  max-width: var(--page-max-width);
   padding: var(--space-6) var(--space-4);
-  box-sizing: border-box;
   border-radius: 20px;
   background: rgba(244, 246, 239, 0.03);
   border: 1px solid rgba(244, 246, 239, 0.08);
@@ -163,20 +241,24 @@
   text-align: center;
   gap: var(--space-2);
   margin-bottom: var(--space-8);
+  scroll-margin-top: 120px;
 
   &__eyebrow {
-    margin: 0;
     font-family: var(--font-mono);
-    font-size: var(--font-size-xl);
-    letter-spacing: 0.5em;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
+    margin: 0;
     color: var(--kora-chalk);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
   }
 
   &__title {
-    margin: 0 0 var(--space-5);
-    font-size: var(--font-size-lg);
+    margin: 0;
+    font-size: var(--font-size-xl);
     font-weight: 600;
+    line-height: 1.2;
   }
 
   &__grid {
@@ -249,6 +331,85 @@
     line-height: 1.5;
     color: var(--kora-chalk);
     opacity: 0.75;
+  }
+}
+
+.about {
+  width: 90%;
+  max-width: var(--page-max-width);
+  padding: var(--space-6) var(--space-4);
+  border-radius: 20px;
+  background: rgba(244, 246, 239, 0.03);
+  border: 1px solid rgba(244, 246, 239, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  scroll-margin-top: 120px;
+
+  @include ds.md {
+    grid-template-columns: 1fr;
+    padding-inline: var(--space-4);
+  }
+
+  &__eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--kora-bib-gold);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__description {
+    margin: var(--space-3) 0 0;
+    color: var(--kora-chalk);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    opacity: 0.78;
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 300px;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.12);
+    background: rgba(244, 246, 239, 0.04);
+    color: var(--kora-chalk);
+    text-decoration: none;
+    transition:
+      border-color 150ms ease,
+      transform 150ms ease;
+
+    &:hover {
+      border-color: var(--kora-turf);
+      transform: translateY(-3px);
+    }
+
+    & i {
+      color: var(--kora-bib-green);
+      font-size: var(--font-size-base);
+    }
+  }
+
+  &__logo {
+    flex: 1;
+
+    & img {
+      width: 300px;
+    }
   }
 }
 
