@@ -25,9 +25,7 @@ export function StepTeamCount({
     <section className={styles.setup__step}>
       <p className={styles.setup__eyebrow}>Paso 1 de 3</p>
       <h1 className={styles.setup__title}>¿Cuántos equipos?</h1>
-      <p className={styles.setup__description}>
-        Elegí una opción rápida o ajustá el número manualmente.
-      </p>
+      <p className={styles.setup__description}>Elegí una opción rápida...</p>
 
       <div className={styles.setup__chips}>
         {TEAM_COUNT_OPTIONS.map((option) => (
@@ -40,32 +38,48 @@ export function StepTeamCount({
             ].join(" ")}
             onClick={() => onChange(option)}
           >
-            {option}
+            <span className={styles.setup__shirt}>
+              {Array.from({ length: option }).map((_, i) => (
+                <i key={i} className="fa-solid fa-shirt"></i>
+              ))}
+            </span>
+            <span className={styles.setup__number}>{option}</span>
           </button>
         ))}
       </div>
 
-      <div className={styles.setup__stepper}>
+      <p className={styles.setup__description}>
+        o ajustá el número manualmente.
+      </p>
+
+      <div className={styles.setup__stepperCard}>
         <button
           type="button"
-          className={styles.setup__stepperButton}
+          className={styles.setup__button}
           onClick={decrement}
           disabled={teamCount <= MIN_TEAMS}
           aria-label="Restar equipo"
         >
-          −
+          <i className="fa-solid fa-minus"></i>
         </button>
-        <span className={styles.setup__stepperValue}>{teamCount}</span>
+        <span className={styles.setup__divider} aria-hidden="true" />
+        <span className={styles.setup__value}>{teamCount}</span>
+        <span className={styles.setup__divider} aria-hidden="true" />
         <button
           type="button"
-          className={styles.setup__stepperButton}
+          className={styles.setup__button}
           onClick={increment}
           disabled={teamCount >= MAX_TEAMS}
           aria-label="Sumar equipo"
         >
-          +
+          <i className="fa-solid fa-plus"></i>
         </button>
       </div>
+
+      <p className={styles.setup__helper}>
+        Mínimo {MIN_TEAMS} equipos <span aria-hidden="true">•</span> Máximo{" "}
+        {MAX_TEAMS} equipos
+      </p>
 
       <div className={styles.setup__actions}>
         <button
@@ -73,6 +87,7 @@ export function StepTeamCount({
           className={styles.setup__secondaryButton}
           onClick={onBack}
         >
+          <i className="fa-solid fa-arrow-left"></i>
           Volver
         </button>
         <button
@@ -81,6 +96,7 @@ export function StepTeamCount({
           onClick={onNext}
         >
           Continuar
+          <i className="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </section>

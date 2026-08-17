@@ -1,14 +1,11 @@
-import { useState } from "react";
 import styles from "./welcome.module.scss";
-import koraIcon from "/favicon.png";
 import koraLogo from "../../../../assets/kora-logo/kora-logo.png";
 import koraBibs from "../../../../assets/illustrations/kora-bibs.png";
+import { AppHeader } from "../../components/AppHeader";
 
 interface StepWelcomeProps {
   onStart: () => void;
 }
-
-const NAV_LINKS = ["Inicio", "Cómo funciona", "FAQ", "Sobre Kora"];
 
 const FAQ_ITEMS = [
   "¿Es gratis usar Kora?",
@@ -20,55 +17,9 @@ const FAQ_ITEMS = [
 ];
 
 export function StepWelcome({ onStart }: StepWelcomeProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <main className={styles.page}>
-      <header className={styles.nav}>
-        <div className={styles.nav__content}>
-          <div className={styles.nav__logo}>
-            <button
-              type="button"
-              className={styles.nav__menu}
-              aria-expanded={isMenuOpen}
-              aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              onClick={() => setIsMenuOpen((open) => !open)}
-            >
-              {isMenuOpen ? (
-                <i className="fa-solid fa-xmark"></i>
-              ) : (
-                <i className="fa-solid fa-bars-staggered"></i>
-              )}
-            </button>
-            <img src={koraIcon} alt="" />
-          </div>
-
-          <nav
-            className={[
-              styles.nav__links,
-              isMenuOpen ? styles["nav__links--open"] : "",
-            ].join(" ")}
-          >
-            {NAV_LINKS.map((link, i) => (
-              <span
-                key={link}
-                className={[
-                  styles.nav__link,
-                  i === 0 ? styles["nav__link--active"] : "",
-                ].join(" ")}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link}
-              </span>
-            ))}
-          </nav>
-
-          <button type="button" className={styles.nav__button}>
-            <i className="fa-regular fa-circle-user"></i>
-            <span>Iniciar sesión</span>
-          </button>
-        </div>
-      </header>
+      <AppHeader />
 
       <section className={styles.welcome}>
         <div className={styles.welcome__content}>

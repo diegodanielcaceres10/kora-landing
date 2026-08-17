@@ -33,15 +33,18 @@ export function StepPlayerList({
   };
 
   return (
-    <section className={styles.setup__step}>
+    <section
+      className={[styles.setup__step, styles["setup__step--narrow"]].join(" ")}
+    >
       <p className={styles.setup__eyebrow}>Paso 3 de 3</p>
       <h1 className={styles.setup__title}>Sumá a los jugadores</h1>
       <p className={styles.setup__description}>
         Tocá el guante para marcar quién ataja.
       </p>
 
-      <form className={styles.setup__playerForm} onSubmit={handleSubmit}>
+      <form className={styles.setup__form} onSubmit={handleSubmit}>
         <input
+          name="player"
           type="text"
           className={styles.setup__input}
           placeholder={
@@ -51,13 +54,15 @@ export function StepPlayerList({
           onChange={(event) => setName(event.target.value)}
           disabled={!canAdd}
         />
-        <button
-          type="submit"
-          className={styles.setup__addButton}
-          disabled={!canAdd}
-        >
-          Agregar
-        </button>
+        {canAdd && (
+          <button
+            type="submit"
+            className={styles.setup__add}
+            disabled={!canAdd}
+          >
+            Agregar
+          </button>
+        )}
       </form>
 
       <p
@@ -69,17 +74,15 @@ export function StepPlayerList({
         {players.length} / {totalNeeded} jugadores
       </p>
 
-      <ul className={styles.setup__playerList}>
+      <ul className={styles.setup__list}>
         {players.map((player) => (
-          <li key={player.id} className={styles.setup__playerItem}>
-            <span className={styles.setup__playerName}>{player.name}</span>
+          <li key={player.id} className={styles.setup__player}>
+            <span className={styles.setup__name}>{player.name}</span>
             <button
               type="button"
               className={[
-                styles.setup__goalkeeperButton,
-                player.isGoalkeeper
-                  ? styles["setup__goalkeeperButton--active"]
-                  : "",
+                styles.setup__goalkeeper,
+                player.isGoalkeeper ? styles["setup__goalkeeper--active"] : "",
               ].join(" ")}
               onClick={() => onToggleGoalkeeper(player.id)}
               aria-pressed={player.isGoalkeeper}
@@ -89,7 +92,7 @@ export function StepPlayerList({
             </button>
             <button
               type="button"
-              className={styles.setup__removeButton}
+              className={styles.setup__remove}
               onClick={() => onRemove(player.id)}
               aria-label={`Quitar a ${player.name}`}
             >
@@ -105,6 +108,7 @@ export function StepPlayerList({
           className={styles.setup__secondaryButton}
           onClick={onBack}
         >
+          <i className="fa-solid fa-arrow-left"></i>
           Volver
         </button>
         <button
@@ -114,6 +118,7 @@ export function StepPlayerList({
           disabled={!isComplete}
         >
           Continuar
+          <i className="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </section>
