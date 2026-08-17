@@ -38,7 +38,7 @@ export function StepTeamCount({
             ].join(" ")}
             onClick={() => onChange(option)}
           >
-            <span className={styles.setup__shirt}>
+            <span className={styles.setup__shirts}>
               {Array.from({ length: option }).map((_, i) => (
                 <i key={i} className="fa-solid fa-shirt"></i>
               ))}

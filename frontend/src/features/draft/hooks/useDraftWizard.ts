@@ -79,6 +79,21 @@ export function useDraftWizard() {
     }));
   }, []);
 
+  const addPlayers = useCallback((names: string[]) => {
+    const trimmed = names.map((n) => n.trim()).filter(Boolean);
+    if (trimmed.length === 0) return;
+
+    setConfig((prev) => {
+      const newPlayers: Player[] = trimmed.map((name, i) => ({
+        id: `player-${Date.now()}-${prev.players.length + i}`,
+        name,
+        teamId: null,
+        isGoalkeeper: false,
+      }));
+      return { ...prev, players: [...prev.players, ...newPlayers] };
+    });
+  }, []);
+
   const removePlayer = useCallback((id: string) => {
     setConfig((prev) => ({
       ...prev,
@@ -87,14 +102,26 @@ export function useDraftWizard() {
   }, []);
 
   const toggleGoalkeeper = useCallback((id: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      players: prev.players.map((player) =>
-        player.id === id
-          ? { ...player, isGoalkeeper: !player.isGoalkeeper }
-          : player,
-      ),
-    }));
+    setConfig((prev) => {
+      const target = prev.players.find((player) => player.id === id);
+      if (!target) return prev;
+
+      if (!target.isGoalkeeper) {
+        const goalkeeperCount = prev.players.filter(
+          (player) => player.isGoalkeeper,
+        ).length;
+        if (goalkeeperCount >= prev.teamCount) return prev;
+      }
+
+      return {
+        ...prev,
+        players: prev.players.map((player) =>
+          player.id === id
+            ? { ...player, isGoalkeeper: !player.isGoalkeeper }
+            : player,
+        ),
+      };
+    });
   }, []);
 
   const setAssignmentMode = useCallback((mode: AssignmentMode) => {
@@ -111,12 +138,18 @@ export function useDraftWizard() {
 
   const assignPlayerToTeam = useCallback((playerId: string, teamId: string) => {
     setConfig((prev) => {
-      const teamCapacity = prev.playersPerTeam;
-      const currentTeamSize = prev.players.filter(
-        (p) => p.teamId === teamId && p.id !== playerId,
-      ).length;
+      const target = prev.players.find((p) => p.id === playerId);
+      if (!target) return prev;
 
-      if (currentTeamSize >= teamCapacity) return prev;
+      const teammates = prev.players.filter(
+        (p) => p.teamId === teamId && p.id !== playerId,
+      );
+
+      if (teammates.length >= prev.playersPerTeam) return prev;
+
+      if (target.isGoalkeeper && teammates.some((p) => p.isGoalkeeper)) {
+        return prev;
+      }
 
       return {
         ...prev,
@@ -138,11 +171,24 @@ export function useDraftWizard() {
 
   const drawTeams = useCallback(() => {
     setConfig((prev) => {
-      const shuffled = [...prev.players].sort(() => Math.random() - 0.5);
-      const playersWithTeams: Player[] = shuffled.map((player, i) => ({
-        ...player,
-        teamId: prev.teams[i % prev.teams.length].id,
-      }));
+      const shuffle = <T>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
+
+      const goalkeepers = shuffle(prev.players.filter((p) => p.isGoalkeeper));
+      const rest = shuffle(prev.players.filter((p) => !p.isGoalkeeper));
+
+      let teamIndex = 0;
+      const assignRoundRobin = (list: Player[]): Player[] =>
+        list.map((player) => {
+          const team = prev.teams[teamIndex % prev.teams.length];
+          teamIndex += 1;
+          return { ...player, teamId: team.id };
+        });
+
+      const playersWithTeams = [
+        ...assignRoundRobin(goalkeepers),
+        ...assignRoundRobin(rest),
+      ];
+
       return { ...prev, players: playersWithTeams };
     });
   }, []);
@@ -160,6 +206,7 @@ export function useDraftWizard() {
     setTeamCount,
     setPlayersPerTeam,
     addPlayer,
+    addPlayers,
     removePlayer,
     toggleGoalkeeper,
     setAssignmentMode,

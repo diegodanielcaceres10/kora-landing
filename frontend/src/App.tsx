@@ -19,6 +19,7 @@ function App() {
           setTeamCount={wizard.setTeamCount}
           setPlayersPerTeam={wizard.setPlayersPerTeam}
           addPlayer={wizard.addPlayer}
+          addPlayers={wizard.addPlayers}
           removePlayer={wizard.removePlayer}
           toggleGoalkeeper={wizard.toggleGoalkeeper}
           onNext={wizard.goNext}

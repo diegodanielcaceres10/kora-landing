@@ -12,6 +12,7 @@ interface StepSetupProps {
   setTeamCount: (count: number) => void;
   setPlayersPerTeam: (count: number) => void;
   addPlayer: (name: string) => void;
+  addPlayers: (names: string[]) => void;
   removePlayer: (id: string) => void;
   toggleGoalkeeper: (id: string) => void;
   onNext: () => void;
@@ -31,6 +32,7 @@ export function StepSetup({
   setTeamCount,
   setPlayersPerTeam,
   addPlayer,
+  addPlayers,
   removePlayer,
   toggleGoalkeeper,
   onNext,
@@ -91,7 +93,9 @@ export function StepSetup({
             <StepPlayerList
               players={config.players}
               totalNeeded={config.teamCount * config.playersPerTeam}
+              teamCount={config.teamCount}
               onAdd={addPlayer}
+              onAddMany={addPlayers}
               onRemove={removePlayer}
               onToggleGoalkeeper={toggleGoalkeeper}
               onNext={goToNextSubStep}
