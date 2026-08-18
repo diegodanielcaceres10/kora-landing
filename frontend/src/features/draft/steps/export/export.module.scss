@@ -1,54 +1,48 @@
-.export {
-  min-height: 100svh;
+@use "../../../../styles/tokens" as ds;
+
+.page {
   width: 100%;
-  background: var(--kora-ink);
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle at 15% 15%,
+      color-mix(in srgb, var(--kora-bib-gold) 20%, transparent),
+      transparent 80%
+    ),
+    var(--kora-ink);
   color: var(--kora-chalk);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.export {
+  width: 100%;
+  color: var(--kora-chalk);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0 var(--space-2);
 
   &__content {
     width: 100%;
-    max-width: 640px;
-    min-height: 100vh;
+    max-width: var(--page-max-width);
     display: flex;
     flex-direction: column;
-    padding: var(--space-8) var(--space-6);
-    box-sizing: border-box;
-    gap: var(--space-4);
-  }
-
-  &__eyebrow {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--kora-turf);
-  }
-
-  &__title {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(2.25rem, 8vw, 3rem);
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-  }
-
-  &__description {
-    margin: 0;
-    font-family: var(--font-body);
-    font-size: var(--font-size-base);
-    line-height: 1.5;
-    opacity: 0.75;
+    align-items: center;
+    padding: var(--space-5);
+    gap: var(--space-5);
   }
 
   &__preview {
     display: flex;
     justify-content: center;
-    padding: var(--space-4) 0;
-    overflow-x: auto;
+    padding: var(--space-1);
   }
 
   &__error {
@@ -56,19 +50,103 @@
     font-family: var(--font-body);
     font-size: var(--font-size-sm);
     color: var(--kora-bib-coral);
+    text-align: center;
+  }
+
+  &__share {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  &__shareTitle {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 8vw, 3rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--kora-chalk);
+  }
+
+  &__shareActions {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(78px, 1fr));
+    gap: var(--space-2);
+  }
+
+  &__shareButton {
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--kora-chalk);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    text-align: center;
+    transition:
+      transform 150ms ease,
+      opacity 150ms ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-3px);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    & i {
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(244, 246, 239, 0.18);
+      background: rgba(244, 246, 239, 0.1);
+      color: var(--kora-chalk);
+      font-size: 30px;
+      cursor: pointer;
+      transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        transform 150ms ease;
+
+      &:hover {
+        border-color: var(--kora-turf);
+        transform: translateY(-2px);
+      }
+    }
   }
 
   &__actions {
-    display: flex;
-    gap: var(--space-3);
-    margin-top: auto;
-    padding-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: var(--space-4);
+
+    @include ds.md {
+      grid-template-columns: 1fr;
+
+      & button {
+        justify-content: start;
+      }
+    }
   }
 
   &__secondaryButton,
   &__primaryButton {
-    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
     height: 50px;
+    padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
     font-family: var(--font-body);
     font-size: 1rem;
@@ -78,111 +156,111 @@
       transform 150ms ease,
       background-color 150ms ease,
       opacity 150ms ease;
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
   }
 
   &__secondaryButton {
     border: 1px solid rgba(244, 246, 239, 0.25);
     background: transparent;
     color: var(--kora-chalk);
-  }
+    justify-content: start;
 
-  &__secondaryButton:hover {
-    border-color: var(--kora-chalk);
+    &:hover {
+      border-color: var(--kora-chalk);
+    }
   }
 
   &__primaryButton {
     border: 1px solid var(--kora-turf);
     background: var(--kora-turf);
     color: var(--kora-chalk);
-  }
+    justify-content: end;
 
-  &__primaryButton:hover:not(:disabled) {
-    transform: translateY(-3px);
-  }
-
-  &__primaryButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  &__resetButton {
-    align-self: center;
-    border: none;
-    background: transparent;
-    color: var(--kora-chalk);
-    opacity: 0.5;
-    font-family: var(--font-body);
-    font-size: var(--font-size-sm);
-    text-decoration: underline;
-    cursor: pointer;
-    margin-top: var(--space-2);
-  }
-
-  &__resetButton:hover {
-    opacity: 0.8;
+    &:hover:not(:disabled) {
+      transform: translateY(-3px);
+    }
   }
 }
 
-// Tarjeta exportable — colores en hex (no CSS vars) para que la imagen
-// generada no dependa del documento donde se capture.
 .card {
-  width: 480px;
-  background: #0a2a20;
-  border: 1px solid rgba(244, 246, 239, 0.15);
-  border-radius: 16px;
-  padding: 32px;
-  box-sizing: border-box;
-  font-family: var(--font-body);
+  border-radius: 12px;
+  border: 1px solid rgba(244, 246, 239, 0.12);
+  background:
+    radial-gradient(
+      circle at 80% 14%,
+      rgba(7, 159, 104, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #08402f 0%, #062b22 56%, #063326 100%);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35);
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-4);
+  overflow: hidden;
 
   &__header {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+
+    & h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(2.9rem, 6.8vw, 4.25rem);
+      font-weight: 400;
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #f4f6ef;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.24);
+    }
   }
 
-  &__brand {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    letter-spacing: 0.04em;
-    color: #f4f6ef;
-    line-height: 1;
-  }
-
-  &__subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #2e7d53;
+  &__logo {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
   }
 
   &__teams {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
   }
 
   &__team {
-    border-radius: 10px;
+    min-width: 0;
+    border-radius: 8px;
     overflow: hidden;
-    background: rgba(244, 246, 239, 0.05);
+    border: 1px solid rgba(7, 159, 104, 0.55);
+    background: rgba(5, 31, 25, 0.62);
   }
 
   &__teamHeader {
-    padding: 10px 14px;
-    font-family: var(--font-display);
-    font-size: 1.1rem;
+    min-height: 54px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
     text-transform: uppercase;
-    letter-spacing: 0.01em;
-    color: #0a2a20;
+    color: #f4f6ef;
+
+    & i {
+      color: #f4f6ef;
+    }
   }
 
   &__teamHeader--gold {
-    background: #ffb627;
+    background: #a87a08;
   }
 
   &__teamHeader--coral {
@@ -190,31 +268,86 @@
   }
 
   &__teamHeader--sky {
-    background: #4da6ff;
+    background: #1e7dac;
   }
 
   &__teamHeader--violet {
-    background: #b18aff;
+    background: #6f4399;
   }
 
   &__roster {
     list-style: none;
     margin: 0;
-    padding: 12px 14px;
+    padding: 14px 18px 18px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 13px;
   }
 
   &__player {
-    display: flex;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) 24px;
     align-items: center;
-    justify-content: space-between;
-    font-size: 0.9rem;
+    gap: 12px;
     color: #f4f6ef;
+
+    & strong {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #079f68;
+      display: grid;
+      place-items: center;
+    }
+
+    & span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   &__goalkeeperBadge {
-    font-size: 0.85rem;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    color: #b18aff;
+  }
+
+  &__footer {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  &__credit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
+    & img {
+      width: 100px;
+    }
+
+    & span {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    & small {
+      color: rgba(244, 246, 239, 0.8);
+    }
+  }
+
+  &__bibs {
+    width: min(62%, 390px);
+    object-fit: contain;
+    filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.28));
+    transform: scale(1.5);
   }
 }

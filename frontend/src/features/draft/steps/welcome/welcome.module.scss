@@ -31,7 +31,6 @@
   align-items: center;
   gap: var(--space-4);
   padding: 100px var(--space-6) var(--space-8);
-  box-sizing: border-box;
 
   @include ds.lg {
     grid-template-columns: 1fr;
@@ -156,7 +155,6 @@
   flex-direction: column;
   gap: var(--space-6);
   padding: var(--space-7) var(--space-4);
-  box-sizing: border-box;
   margin: var(--space-8) var(--space-4);
   scroll-margin-top: 120px;
 
@@ -203,7 +201,6 @@
     border-radius: var(--radius-md);
     border: 1px solid rgba(244, 246, 239, 0.1);
     background: rgba(5, 31, 25, 0.36);
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -422,7 +419,6 @@
   justify-content: space-between;
   gap: var(--space-6);
   padding: var(--space-6);
-  box-sizing: border-box;
   border-top: 1px solid rgba(244, 246, 239, 0.1);
   flex-wrap: wrap;
 
