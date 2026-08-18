@@ -424,16 +424,32 @@
     background: transparent;
     font-size: 1rem;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.7;
     transition:
       opacity 150ms ease,
       border-color 150ms ease,
       background-color 150ms ease;
 
+    & i {
+      color: var(--kora-chalk);
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 1;
+    }
+
+    &:disabled {
+      opacity: 0.1;
+    }
+
     &--active {
       opacity: 1;
       border-color: var(--kora-bib-gold);
       background: rgba(255, 182, 39, 0.15);
+
+      & i {
+        color: var(--kora-bib-gold);
+      }
     }
   }
 

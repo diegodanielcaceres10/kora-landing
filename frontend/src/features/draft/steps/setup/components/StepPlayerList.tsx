@@ -173,7 +173,7 @@ export function StepPlayerList({
                   : "Marcar como arquero"
               }
             >
-              🧤
+              <i className={"fa-solid fa-mitten"}></i>
             </button>
             <button
               type="button"
