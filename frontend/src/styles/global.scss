@@ -46,3 +46,28 @@ img {
 #root {
   min-height: 100dvh;
 }
+
+.custom_scroll {
+  overflow-y: auto;
+  border: 1px solid var(--border-color, rgba(244, 246, 239, 0.18));
+  padding: var(--spacing-md, var(--space-4));
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-surface, var(--kora-turf)) transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bg-surface, var(--kora-turf));
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-surface, var(--kora-turf));
+  }
+}

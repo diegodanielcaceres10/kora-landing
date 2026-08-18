@@ -242,7 +242,7 @@ export function StepDraw({
                 <span>{availableCount}</span>
               </div>
 
-              <ul className={styles.draw__playerList}>
+              <ul className={[styles.draw__playerList, "custom_scroll"].join(" ")}>
                 {availablePlayers.map((player) => {
                   return (
                     <li
