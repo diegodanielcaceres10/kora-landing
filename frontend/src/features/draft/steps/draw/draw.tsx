@@ -14,17 +14,94 @@ interface StepDrawProps {
   onBack: () => void;
 }
 
-const FORMATION_SPOTS = [
-  { x: 50, y: 10 },
-  { x: 26, y: 30 },
-  { x: 50, y: 30 },
-  { x: 74, y: 30 },
-  { x: 22, y: 55 },
-  { x: 50, y: 48 },
-  { x: 78, y: 55 },
-  { x: 36, y: 78 },
-  { x: 64, y: 78 },
-];
+const FORMATION_SPOTS_BY_SIZE: Record<number, { x: number; y: number }[]> = {
+  1: [{ x: 50, y: 48 }],
+  2: [
+    { x: 38, y: 38 },
+    { x: 62, y: 62 },
+  ],
+  3: [
+    { x: 50, y: 18 },
+    { x: 34, y: 52 },
+    { x: 66, y: 52 },
+  ],
+  4: [
+    { x: 50, y: 15 },
+    { x: 30, y: 45 },
+    { x: 70, y: 45 },
+    { x: 50, y: 75 },
+  ],
+  5: [
+    { x: 50, y: 12 },
+    { x: 32, y: 34 },
+    { x: 68, y: 34 },
+    { x: 35, y: 68 },
+    { x: 65, y: 68 },
+  ],
+  6: [
+    { x: 50, y: 12 },
+    { x: 30, y: 34 },
+    { x: 70, y: 34 },
+    { x: 30, y: 62 },
+    { x: 70, y: 62 },
+    { x: 50, y: 82 },
+  ],
+  7: [
+    { x: 50, y: 12 },
+    { x: 26, y: 32 },
+    { x: 50, y: 32 },
+    { x: 74, y: 32 },
+    { x: 34, y: 62 },
+    { x: 66, y: 62 },
+    { x: 50, y: 82 },
+  ],
+  8: [
+    { x: 50, y: 10 },
+    { x: 26, y: 30 },
+    { x: 50, y: 30 },
+    { x: 74, y: 30 },
+    { x: 26, y: 56 },
+    { x: 50, y: 56 },
+    { x: 74, y: 56 },
+    { x: 50, y: 80 },
+  ],
+  9: [
+    { x: 50, y: 10 },
+    { x: 26, y: 30 },
+    { x: 50, y: 30 },
+    { x: 74, y: 30 },
+    { x: 22, y: 55 },
+    { x: 50, y: 48 },
+    { x: 78, y: 55 },
+    { x: 36, y: 78 },
+    { x: 64, y: 78 },
+  ],
+  10: [
+    { x: 50, y: 9 },
+    { x: 22, y: 28 },
+    { x: 41, y: 28 },
+    { x: 59, y: 28 },
+    { x: 78, y: 28 },
+    { x: 28, y: 55 },
+    { x: 50, y: 52 },
+    { x: 72, y: 55 },
+    { x: 38, y: 80 },
+    { x: 62, y: 80 },
+  ],
+  11: [
+    { x: 50, y: 8 },
+    { x: 20, y: 27 },
+    { x: 40, y: 27 },
+    { x: 60, y: 27 },
+    { x: 80, y: 27 },
+    { x: 25, y: 52 },
+    { x: 50, y: 50 },
+    { x: 75, y: 52 },
+    { x: 30, y: 78 },
+    { x: 50, y: 82 },
+    { x: 70, y: 78 },
+  ],
+};
 
 export function StepDraw({
   config,
@@ -47,6 +124,9 @@ export function StepDraw({
   const assignedCount = config.players.filter(
     (player) => player.teamId !== null,
   ).length;
+  const availablePlayers = config.players.filter(
+    (player) => player.teamId === null,
+  );
   const availableCount = config.players.length - assignedCount;
   const allAssigned =
     config.players.length > 0 &&
@@ -65,6 +145,9 @@ export function StepDraw({
       ),
     [config.players, config.teams],
   );
+  const formationSpots =
+    FORMATION_SPOTS_BY_SIZE[config.playersPerTeam] ??
+    FORMATION_SPOTS_BY_SIZE[11];
 
   const handleDragStart = (event: DragEvent<HTMLElement>, playerId: string) => {
     event.dataTransfer.setData("text/plain", playerId);
@@ -160,7 +243,7 @@ export function StepDraw({
               </div>
 
               <ul className={styles.draw__playerList}>
-                {config.players.map((player) => {
+                {availablePlayers.map((player) => {
                   return (
                     <li
                       key={player.id}
@@ -258,7 +341,7 @@ export function StepDraw({
                 <span className={styles.draw__centerCircle}></span>
               </div>
 
-              {FORMATION_SPOTS.map((spot, index) => {
+              {formationSpots.map((spot, index) => {
                 const player = selectedTeam
                   ? playersByTeam[selectedTeam.id]?.[index]
                   : undefined;
