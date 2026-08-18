@@ -15,10 +15,10 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [clipboardMessage, setClipboardMessage] = useState<string | null>(null);
 
   const shareTitle = "Sorteo de equipos Kora";
   const shareText = "Mirá cómo quedaron los equipos del partido.";
-  const shareUrl = window.location.href;
 
   const createResultImage = async () => {
     if (!cardRef.current) return null;
@@ -37,9 +37,18 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
     link.click();
   };
 
+  const createResultFile = async () => {
+    const dataUrl = await createResultImage();
+    if (!dataUrl) return null;
+
+    const blob = await (await fetch(dataUrl)).blob();
+    return new File([blob], "kora-equipos.png", { type: "image/png" });
+  };
+
   const handleDownload = async () => {
     setIsExporting(true);
     setError(null);
+    setClipboardMessage(null);
 
     try {
       const dataUrl = await createResultImage();
@@ -52,47 +61,65 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
     }
   };
 
-  const handleNativeShare = async () => {
+  const handleShareWhatsApp = async () => {
     setIsExporting(true);
     setError(null);
+    setClipboardMessage(null);
 
     try {
-      const dataUrl = await createResultImage();
-      if (!dataUrl) return;
+      const file = await createResultFile();
+      if (!file) return;
 
-      const blob = await (await fetch(dataUrl)).blob();
-      const file = new File([blob], "kora-equipos.png", { type: "image/png" });
       const shareData = {
         title: shareTitle,
         text: shareText,
         files: [file],
       };
 
-      if (navigator.canShare?.(shareData)) {
-        await navigator.share(shareData);
+      if (!navigator.canShare?.(shareData)) {
+        setError(
+          "Este navegador no permite compartir imágenes directamente. Probá desde el celular.",
+        );
         return;
       }
 
-      downloadImage(dataUrl);
+      await navigator.share(shareData);
     } catch {
-      setError("No se pudo preparar la imagen para compartir.");
+      setError("No se pudo compartir la imagen por WhatsApp.");
     } finally {
       setIsExporting(false);
     }
   };
 
-  const handleShareWhatsApp = () => {
-    const message = encodeURIComponent(`${shareText} ${shareUrl}`);
-    window.open(`https://wa.me/?text=${message}`, "_blank", "noreferrer");
-  };
+  const createPlainTextResult = () =>
+    config.teams
+      .map((team) => {
+        const players = config.players
+          .filter((player) => player.teamId === team.id)
+          .sort(
+            (a, b) =>
+              (a.spotIndex ?? Number.MAX_SAFE_INTEGER) -
+              (b.spotIndex ?? Number.MAX_SAFE_INTEGER),
+          )
+          .map((player, index) => {
+            const goalkeeperLabel = player.isGoalkeeper ? " (Arquero)" : "";
+            return `${index + 1}. ${player.name}${goalkeeperLabel}`;
+          });
 
-  const handleShareFacebook = () => {
-    const url = encodeURIComponent(shareUrl);
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      "_blank",
-      "noreferrer",
-    );
+        return `${team.name}\n${players.join("\n")}`;
+      })
+      .join("\n\n");
+
+  const handleCopyPlainText = async () => {
+    setError(null);
+    setClipboardMessage(null);
+
+    try {
+      await navigator.clipboard.writeText(createPlainTextResult());
+      setClipboardMessage("Listado copiado al portapapeles.");
+    } catch {
+      setError("No se pudo copiar el listado.");
+    }
   };
 
   return (
@@ -106,6 +133,11 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
           </div>
 
           {error && <p className={styles.export__error}>{error}</p>}
+          {clipboardMessage && (
+            <p className={styles.export__clipboardMessage}>
+              {clipboardMessage}
+            </p>
+          )}
 
           <section className={styles.export__share}>
             <h1 className={styles.export__shareTitle}>Compartir resultado</h1>
@@ -117,6 +149,7 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
                   styles["export__shareButton--whatsapp"],
                 ].join(" ")}
                 onClick={handleShareWhatsApp}
+                disabled={isExporting}
               >
                 <span>
                   <i className="fa-brands fa-whatsapp"></i>
@@ -125,30 +158,13 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
               </button>
               <button
                 type="button"
-                className={[
-                  styles.export__shareButton,
-                  styles["export__shareButton--instagram"],
-                ].join(" ")}
-                onClick={handleNativeShare}
-                disabled={isExporting}
+                className={styles.export__shareButton}
+                onClick={handleCopyPlainText}
               >
                 <span>
-                  <i className="fa-brands fa-instagram"></i>
+                  <i className="fa-solid fa-clipboard-list"></i>
                 </span>
-                Instagram
-              </button>
-              <button
-                type="button"
-                className={[
-                  styles.export__shareButton,
-                  styles["export__shareButton--facebook"],
-                ].join(" ")}
-                onClick={handleShareFacebook}
-              >
-                <span>
-                  <i className="fa-brands fa-facebook-f"></i>
-                </span>
-                Facebook
+                Copiar texto
               </button>
               <button
                 type="button"

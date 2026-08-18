@@ -53,6 +53,14 @@
     text-align: center;
   }
 
+  &__clipboardMessage {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--kora-turf);
+    text-align: center;
+  }
+
   &__share {
     display: flex;
     flex-direction: column;
@@ -72,7 +80,7 @@
 
   &__shareActions {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-8);
   }
 
@@ -202,6 +210,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  max-width: 900px;
   overflow: hidden;
 
   &__header {
@@ -252,58 +261,53 @@
   }
 
   &__teamHeader {
-    min-height: 54px;
-    padding: 0 18px;
+    min-width: 0;
+    height: 62px;
+    padding: 0 var(--space-4);
+    background: rgba(244, 246, 239, 0.04);
+    color: var(--kora-chalk);
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-    text-transform: uppercase;
-    color: #f4f6ef;
+    justify-content: space-between;
+    gap: var(--space-3);
+    background: color-mix(in srgb, currentColor 24%, transparent);
 
-    & i {
-      color: #f4f6ef;
+    &--gold {
+      color: var(--kora-bib-gold);
     }
-  }
 
-  &__teamHeader--gold {
-    background: #a87a08;
-  }
+    &--coral {
+      color: var(--kora-bib-coral);
+    }
 
-  &__teamHeader--coral {
-    background: #ff5a36;
-  }
+    &--sky {
+      color: var(--kora-bib-sky);
+    }
 
-  &__teamHeader--sky {
-    background: #1e7dac;
-  }
-
-  &__teamHeader--violet {
-    background: #6f4399;
+    &--violet {
+      color: var(--kora-bib-violet);
+    }
   }
 
   &__roster {
     list-style: none;
     margin: 0;
-    padding: 14px 18px 18px;
+    padding: var(--space-2);
     display: flex;
     flex-direction: column;
     gap: 13px;
   }
 
   &__player {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) 24px;
+    display: flex;
     align-items: center;
-    gap: 12px;
-    color: #f4f6ef;
+    gap: var(--space-2);
 
     & strong {
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: #079f68;
+      background: var(--kora-turf);
       display: grid;
       place-items: center;
     }
