@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styles from "./AppHeader.module.scss";
+import styles from "./header.module.scss";
 import koraIcon from "/favicon.png";
 
 const NAV_LINKS = [
@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: "Sobre Kora", to: "/sobre-kora" },
 ];
 
-export function AppHeader() {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
 
@@ -57,10 +57,10 @@ export function AppHeader() {
           ))}
         </nav>
 
-        <button type="button" className={styles.nav__button}>
+        {/* <button type="button" className={styles.nav__button}>
           <i className="fa-regular fa-circle-user"></i>
           <span>Iniciar sesión</span>
-        </button>
+        </button> */}
       </div>
     </header>
   );

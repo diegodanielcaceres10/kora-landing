@@ -1,47 +1,22 @@
 @use "../../../../styles/tokens" as ds;
 
-.page {
-  width: 100%;
-  min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 85% 25%,
-      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
-      transparent 75%
-    ),
-    radial-gradient(
-      circle at 15% 15%,
-      color-mix(in srgb, var(--kora-bib-gold) 20%, transparent),
-      transparent 80%
-    ),
-    var(--kora-ink);
-  color: var(--kora-chalk);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .draw {
   width: 100%;
-  color: var(--kora-chalk);
+  max-width: var(--page-max-width);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px 0 var(--space-2);
-  height: 100vh;
-
-  @include ds.lg {
-    height: auto;
-  }
+  padding: var(--space-6);
+  flex: 1;
 
   &__content {
     width: 100%;
     max-width: var(--page-max-width);
     display: grid;
-    grid-template-columns: 40% 60%;
-    gap: var(--space-6);
-    padding: var(--space-4) var(--space-6);
-    height: 100%;
+    grid-template-columns: 38% 60%;
+    justify-content: space-between;
+    align-items: start;
+    flex: 1;
     min-height: 0;
 
     @include ds.lg {
@@ -52,13 +27,14 @@
   &__sidebar,
   &__board {
     min-width: 0;
+    min-height: 0;
+    max-height: 100%;
   }
 
   &__sidebar {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    min-height: 0;
   }
 
   &__intro {
@@ -89,7 +65,6 @@
 
   &__description {
     margin: 0;
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     line-height: 1.5;
     color: var(--kora-chalk);
@@ -105,7 +80,6 @@
     border-radius: var(--radius-md);
     border: 1px solid rgba(244, 246, 239, 0.18);
     background: rgba(244, 246, 239, 0.03);
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
 
     & span {
@@ -125,8 +99,10 @@
   &__playerPanel {
     flex: 1;
     min-height: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: var(--space-3);
     padding: var(--space-4);
     border-radius: var(--radius-md);
@@ -331,7 +307,6 @@
     background: var(--kora-turf);
     color: var(--kora-chalk);
     justify-content: center;
-    font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -379,7 +354,7 @@
   &__pitchLines {
     position: absolute;
     inset: var(--space-5);
-    border: 4px solid rgba(244, 246, 239, 0.35);
+    border: 4px solid rgba(244, 246, 239, 0.15);
     pointer-events: none;
   }
 
@@ -449,13 +424,9 @@
     }
 
     & small {
-      max-width: 100%;
+      width: 80px;
       font-size: var(--font-size-xs);
-      line-height: 1.25;
       opacity: 0.78;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
   }
 
@@ -613,7 +584,6 @@
   }
 
   &__modalListWrapper {
-    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -622,7 +592,6 @@
   &__modalHint,
   &__emptyModal {
     margin: 0;
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
     line-height: 1.45;
     color: var(--kora-chalk);
@@ -630,7 +599,6 @@
   }
 
   &__modalPlayerList {
-    min-height: 0;
     max-height: 330px;
     list-style: none;
     margin: 0;
@@ -718,7 +686,6 @@
     height: 50px;
     padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
-    font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;

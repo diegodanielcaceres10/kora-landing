@@ -1,34 +1,13 @@
 @use "../../../../styles/tokens" as tokens;
 
-.page {
-  width: 100%;
-  min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 85% 25%,
-      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
-      transparent 75%
-    ),
-    radial-gradient(
-      circle at 15% 15%,
-      color-mix(in srgb, var(--kora-bib-gold) 20%, transparent),
-      transparent 80%
-    ),
-    var(--kora-ink);
-  color: var(--kora-chalk);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .setup {
   width: 100%;
   max-width: 600px;
-  color: var(--kora-chalk);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px var(--space-6) var(--space-8);
+  padding: var(--space-6);
+  flex: 1;
 
   &__content {
     width: 100%;
@@ -66,7 +45,6 @@
 
   &__description {
     margin: 0;
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     line-height: 1.5;
     color: var(--kora-chalk);
@@ -181,7 +159,6 @@
   &__helper {
     margin: 0;
     text-align: center;
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
     color: var(--kora-chalk);
     opacity: 0.65;
@@ -231,7 +208,6 @@
     align-items: center;
     gap: var(--space-2);
     margin: 0;
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
     color: var(--kora-chalk);
     opacity: 0.85;
@@ -258,7 +234,6 @@
     border: 1px solid rgba(244, 246, 239, 0.25);
     background: rgba(244, 246, 239, 0.05);
     color: var(--kora-chalk);
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
 
     &:focus {
@@ -278,7 +253,6 @@
     border: 1px solid var(--kora-turf);
     background: var(--kora-turf);
     color: var(--kora-chalk);
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     font-weight: 600;
     cursor: pointer;
@@ -316,15 +290,14 @@
     border: none;
     background: transparent;
     color: var(--kora-turf);
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
     font-weight: 600;
     cursor: pointer;
     padding: 0;
-  }
 
-  &__pasteToggle:hover {
-    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__pasteForm {
@@ -341,7 +314,6 @@
     border: 1px solid rgba(244, 246, 239, 0.25);
     background: rgba(244, 246, 239, 0.05);
     color: var(--kora-chalk);
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     line-height: 1.5;
     resize: vertical;
@@ -369,7 +341,6 @@
     border: 1px solid rgba(244, 246, 239, 0.25);
     background: transparent;
     color: var(--kora-chalk);
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     cursor: pointer;
   }
@@ -384,7 +355,6 @@
     border: 1px solid rgba(255, 90, 54, 0.4);
     background: rgba(255, 90, 54, 0.1);
     color: var(--kora-bib-coral);
-    font-family: var(--font-body);
     font-size: var(--font-size-sm);
   }
 
@@ -410,7 +380,6 @@
 
   &__name {
     flex: 1;
-    font-family: var(--font-body);
     font-size: var(--font-size-base);
     color: var(--kora-chalk);
   }
@@ -488,7 +457,6 @@
     height: 50px;
     padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
-    font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;

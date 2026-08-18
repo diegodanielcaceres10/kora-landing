@@ -1,5 +1,5 @@
-// src/App.tsx
 import { Routes, Route } from "react-router-dom";
+import { Layout } from "./components/layout/Layout";
 import { useDraftWizard } from "./features/draft/hooks/useDraftWizard";
 import { StepWelcome } from "./features/draft/steps/welcome/welcome";
 import { StepSetup } from "./features/draft/steps/setup/setup";
@@ -59,10 +59,12 @@ function DraftWizard() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<DraftWizard />} />
-      <Route path="/como-funciona" element={<HowItWorksPage />} />
-      <Route path="/faq" element={<FAQPage />} />
-      <Route path="/sobre-kora" element={<AboutPage />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<DraftWizard />} />
+        <Route path="/como-funciona" element={<HowItWorksPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/sobre-kora" element={<AboutPage />} />
+      </Route>
     </Routes>
   );
 }

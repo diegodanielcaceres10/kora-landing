@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import type { DraftConfig } from "../../draft.types";
-import { AppHeader } from "../../components/AppHeader";
-import { ResultCard } from "./components/ResultCard";
+import { Image } from "./components/image";
 import styles from "./export.module.scss";
 
 interface StepExportProps {
@@ -123,82 +122,76 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
   };
 
   return (
-    <main className={styles.page}>
-      <AppHeader />
-
-      <section className={styles.export}>
-        <div className={styles.export__content}>
-          <div className={styles.export__preview}>
-            <ResultCard ref={cardRef} config={config} />
-          </div>
-
-          {error && <p className={styles.export__error}>{error}</p>}
-          {clipboardMessage && (
-            <p className={styles.export__clipboardMessage}>
-              {clipboardMessage}
-            </p>
-          )}
-
-          <section className={styles.export__share}>
-            <h1 className={styles.export__shareTitle}>Compartir resultado</h1>
-            <div className={styles.export__shareActions}>
-              <button
-                type="button"
-                className={[
-                  styles.export__shareButton,
-                  styles["export__shareButton--whatsapp"],
-                ].join(" ")}
-                onClick={handleShareWhatsApp}
-                disabled={isExporting}
-              >
-                <span>
-                  <i className="fa-brands fa-whatsapp"></i>
-                </span>
-                WhatsApp
-              </button>
-              <button
-                type="button"
-                className={styles.export__shareButton}
-                onClick={handleCopyPlainText}
-              >
-                <span>
-                  <i className="fa-solid fa-clipboard-list"></i>
-                </span>
-                Copiar texto
-              </button>
-              <button
-                type="button"
-                className={styles.export__shareButton}
-                onClick={handleDownload}
-                disabled={isExporting}
-              >
-                <span>
-                  <i className="fa-solid fa-download"></i>
-                </span>
-                Descargar
-              </button>
-            </div>
-          </section>
-
-          <div className={styles.export__actions}>
-            <button
-              type="button"
-              className={styles.export__secondaryButton}
-              onClick={onBack}
-            >
-              <i className="fa-solid fa-arrow-left"></i>
-              Volver
-            </button>
-            <button
-              type="button"
-              className={styles.export__primaryButton}
-              onClick={onReset}
-            >
-              Nuevo sorteo
-            </button>
-          </div>
+    <section className={styles.export}>
+      <div className={styles.export__content}>
+        <div className={styles.export__preview}>
+          <Image ref={cardRef} config={config} />
         </div>
-      </section>
-    </main>
+
+        {error && <p className={styles.export__error}>{error}</p>}
+        {clipboardMessage && (
+          <p className={styles.export__clipboardMessage}>{clipboardMessage}</p>
+        )}
+
+        <section className={styles.export__share}>
+          <p className={styles.export__shareTitle}>Compartir resultado</p>
+          <div className={styles.export__shareActions}>
+            <button
+              type="button"
+              className={[
+                styles.export__shareButton,
+                styles["export__shareButton--whatsapp"],
+              ].join(" ")}
+              onClick={handleShareWhatsApp}
+              disabled={isExporting}
+            >
+              <span>
+                <i className="fa-brands fa-whatsapp"></i>
+              </span>
+              WhatsApp
+            </button>
+            <button
+              type="button"
+              className={styles.export__shareButton}
+              onClick={handleCopyPlainText}
+            >
+              <span>
+                <i className="fa-solid fa-clipboard-list"></i>
+              </span>
+              Copiar texto
+            </button>
+            <button
+              type="button"
+              className={styles.export__shareButton}
+              onClick={handleDownload}
+              disabled={isExporting}
+            >
+              <span>
+                <i className="fa-solid fa-download"></i>
+              </span>
+              Descargar
+            </button>
+          </div>
+        </section>
+
+        <div className={styles.export__actions}>
+          <button
+            type="button"
+            className={styles.export__secondaryButton}
+            onClick={onBack}
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+            Volver
+          </button>
+          <button
+            type="button"
+            className={styles.export__primaryButton}
+            onClick={onReset}
+          >
+            Nuevo sorteo
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

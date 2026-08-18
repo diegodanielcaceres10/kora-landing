@@ -27,7 +27,6 @@
   border: none;
   background: transparent;
   color: var(--kora-chalk);
-  font-family: var(--font-body);
   font-size: var(--font-size-base);
   text-align: left;
   cursor: pointer;
@@ -55,14 +54,12 @@
 }
 
 .answerInner {
-  min-height: 0;
   overflow: hidden;
 }
 
 .answer {
   margin: 0;
   padding: 0 var(--space-5) var(--space-4);
-  font-family: var(--font-body);
   font-size: var(--font-size-sm);
   line-height: 1.5;
   color: var(--kora-chalk);
