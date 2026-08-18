@@ -1,6 +1,6 @@
 export type WizardStep = "welcome" | "setup" | "draw" | "export";
 
-export type SetupSubStep = "teams" | "playersPerTeam" | "players";
+export type SetupSubStep = "teams" | "playersPerTeam" | "list";
 
 export type DrawSubStep = "mode" | "assign";
 
@@ -12,6 +12,7 @@ export interface Player {
   id: string;
   name: string;
   teamId: string | null;
+  spotIndex: number | null;
   isGoalkeeper: boolean;
 }
 

@@ -1,98 +1,437 @@
-@use "../../../../styles/tokens" as tokens;
+@use "../../../../styles/tokens" as ds;
 
-.welcome {
-  min-height: 100svh;
+.page {
   width: 100%;
-  background: var(--kora-ink);
+  min-height: 100vh;
   background:
-    radial-gradient(circle at 30% 30%, rgba(34, 63, 55, 0.9), transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(22, 145, 79, 0.2), transparent 50%);
+    radial-gradient(
+      circle at 85% 25%,
+      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle at 15% 15%,
+      color-mix(in srgb, var(--kora-bib-gold) 5%, transparent),
+      transparent 80%
+    ),
+    var(--kora-ink);
   color: var(--kora-chalk);
   display: flex;
-  justify-content: center;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  scroll-behavior: smooth;
+}
+
+.welcome {
+  width: 100%;
+  max-width: var(--page-max-width);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: 100px var(--space-6) var(--space-8);
+
+  @include ds.lg {
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
 
   &__content {
-    width: 100%;
-    max-width: 760px;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--space-8) var(--space-6);
-    box-sizing: border-box;
-    gap: var(--space-6);
+    gap: var(--space-5);
+    margin: var(--space-8) 0;
+    z-index: 1;
   }
 
-  &__brand {
-    width: 200px;
-  }
-
-  &__name {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 12vw, 5.5rem);
-    line-height: 0.8;
-    letter-spacing: 0.015em;
-    text-transform: uppercase;
-    color: var(--kora-chalk);
-  }
-
-  &__hero {
-    text-align: center;
+  &__logo {
+    align-self: start;
+    height: 150px;
+    max-width: 100%;
   }
 
   &__title {
+    width: 100%;
     margin: 0;
     font-family: var(--font-display);
-    font-size: 4rem;
+    font-size: calc(var(--font-size-2xl) * 2);
     font-weight: 400;
-    line-height: 0.92;
-    letter-spacing: 0.01em;
+    line-height: 0.98;
+    letter-spacing: 0.005em;
     text-transform: uppercase;
-    color: var(--kora-chalk);
+    letter-spacing: 3px;
+  }
+
+  &__highlight {
+    background: var(--kora-gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   &__description {
-    font-family: var(--font-body);
-    font-size: clamp(1rem, 2.5vw, 1.15rem);
-    font-weight: 400;
-    line-height: 1.55;
-    color: var(--kora-chalk);
-    opacity: 0.82;
-  }
-
-  &__illustration {
     width: 100%;
-    display: flex;
-    height: 1px;
-    flex: 1;
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--kora-chalk);
+    opacity: 0.8;
   }
 
-  &__button {
+  &__actions {
+    align-self: start;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: var(--space-3);
-    border: 1px solid var(--kora-turf);
-    background: transparent;
-    color: var(--kora-turf);
-    width: 50%;
+    flex-wrap: wrap;
+  }
+
+  &__primaryButton,
+  &__secondaryButton {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     height: 50px;
+    padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
-    font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     font-weight: 600;
     cursor: pointer;
     transition:
       transform 150ms ease,
-      background-color 150ms ease,
-      border-color 150ms ease;
+      background-color 150ms ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
   }
 
-  &__button:hover,
-  &__button:active {
-    transform: translateY(-5px);
-    background: var(--kora-turf);
+  &__primaryButton {
+    background: var(--kora-bib-green);
     color: var(--kora-chalk);
+  }
+
+  &__secondaryButton {
+    border: 1px solid rgba(244, 246, 239, 0.3);
+    background: transparent;
+    color: var(--kora-chalk);
+  }
+
+  &__stats {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.9;
+
+    & li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    & i {
+      color: var(--kora-bib-green);
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  &__illustration {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.tutorial {
+  width: 90%;
+  max-width: var(--page-max-width);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-7) var(--space-4);
+  margin: var(--space-8) var(--space-4);
+  scroll-margin-top: 120px;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  &__eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--kora-chalk);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+
+    @include ds.md {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item {
+    min-height: 220px;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.1);
+    background: rgba(5, 31, 25, 0.36);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  &__number {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--kora-bib-gold);
+    opacity: 0.75;
+  }
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(72, 161, 87, 0.18);
+    color: var(--kora-bib-green);
+    display: grid;
+    place-items: center;
+    font-size: var(--font-size-lg);
+  }
+}
+
+.faq {
+  width: 90%;
+  max-width: var(--page-max-width);
+  padding: var(--space-6) var(--space-4);
+  border-radius: 20px;
+  background: rgba(244, 246, 239, 0.03);
+  border: 1px solid rgba(244, 246, 239, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  scroll-margin-top: 120px;
+
+  &__eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--kora-chalk);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    text-align: left;
+  }
+
+  &__item {
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.12);
+    background: rgba(5, 31, 25, 0.4);
+    transition: border-color 150ms ease;
+    overflow: hidden;
+
+    &--open {
+      border-color: var(--kora-turf);
+    }
+  }
+
+  &__question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: none;
+    background: transparent;
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: transform 200ms ease;
+
+    &--open {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+  }
+
+  &__answerWrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 220ms ease;
+
+    &--open {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &__answerInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__answer {
+    margin: 0;
+    padding: 0 var(--space-5) var(--space-4);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--kora-chalk);
+    opacity: 0.75;
+  }
+}
+
+.about {
+  width: 90%;
+  max-width: var(--page-max-width);
+  padding: var(--space-6) var(--space-4);
+  border-radius: 20px;
+  background: rgba(244, 246, 239, 0.03);
+  border: 1px solid rgba(244, 246, 239, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  scroll-margin-top: 120px;
+
+  @include ds.md {
+    grid-template-columns: 1fr;
+    padding-inline: var(--space-4);
+  }
+
+  &__eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--kora-bib-gold);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__description {
+    margin: var(--space-3) 0 0;
+    color: var(--kora-chalk);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    opacity: 0.78;
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 300px;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.12);
+    background: rgba(244, 246, 239, 0.04);
+    color: var(--kora-chalk);
+    text-decoration: none;
+    transition:
+      border-color 150ms ease,
+      transform 150ms ease;
+
+    &:hover {
+      border-color: var(--kora-turf);
+      transform: translateY(-3px);
+    }
+
+    & i {
+      color: var(--kora-bib-green);
+      font-size: var(--font-size-base);
+    }
+  }
+
+  &__logo {
+    flex: 1;
+
+    & img {
+      width: 300px;
+    }
+  }
+}
+
+.footer {
+  width: 100%;
+  max-width: 1320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-top: 1px solid rgba(244, 246, 239, 0.1);
+  flex-wrap: wrap;
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.7;
+
+    & p {
+      margin: 0;
+    }
   }
 }

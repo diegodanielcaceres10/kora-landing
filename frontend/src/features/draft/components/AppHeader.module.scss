@@ -1,0 +1,128 @@
+@use "../../../styles/tokens" as ds;
+
+.nav {
+  width: 100%;
+  border-bottom: 1px solid rgba(244, 246, 239, 0.1);
+  position: fixed;
+  background: rgba(31, 65, 55, 0.2);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  top: 0;
+  z-index: 999;
+
+  &__content {
+    max-width: var(--page-max-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin: auto;
+    padding: var(--space-4) var(--space-6);
+  }
+
+  &__logo {
+    display: flex;
+    gap: var(--space-4);
+    height: 64px;
+
+    @include ds.md {
+      height: 40px;
+    }
+  }
+
+  &__menu {
+    display: none;
+    color: var(--kora-chalk);
+    z-index: 999;
+
+    @include ds.md {
+      display: flex;
+    }
+
+    & i {
+      font-size: 40px;
+    }
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    transition: transform 150ms ease;
+
+    @include ds.md {
+      position: absolute;
+      flex-direction: column;
+      font-size: var(--font-size-2xl);
+      width: 100%;
+      height: 100vh;
+      background: rgba(31, 65, 55, 0.95);
+      backdrop-filter: blur(1rem);
+      -webkit-backdrop-filter: blur(1rem);
+      inset: 0;
+      transform: translateY(-100%);
+
+      &--open {
+        @include ds.md {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  &__link {
+    color: var(--kora-chalk);
+    opacity: 0.75;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 1;
+      color: var(--kora-bib-gold);
+    }
+
+    &--active {
+      opacity: 1;
+      color: var(--kora-bib-gold);
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+        height: 2px;
+        background: var(--kora-bib-gold);
+        border-radius: var(--radius-pill);
+      }
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 42px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--kora-turf);
+    color: var(--kora-chalk);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+
+    @include ds.md {
+      border-color: transparent;
+      justify-self: end;
+
+      & i {
+        font-size: 40px;
+      }
+
+      & span {
+        display: none;
+      }
+    }
+  }
+}

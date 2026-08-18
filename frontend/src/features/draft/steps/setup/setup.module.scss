@@ -1,56 +1,53 @@
 @use "../../../../styles/tokens" as tokens;
 
-.setup {
-  min-height: 100svh;
+.page {
   width: 100%;
-  background: var(--kora-ink);
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle at 15% 15%,
+      color-mix(in srgb, var(--kora-bib-gold) 20%, transparent),
+      transparent 80%
+    ),
+    var(--kora-ink);
   color: var(--kora-chalk);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.setup {
+  width: 100%;
+  max-width: 600px;
+  color: var(--kora-chalk);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px var(--space-6) var(--space-8);
 
   &__content {
     width: 100%;
-    max-width: 560px;
-    min-height: 100vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    padding: var(--space-8) var(--space-6);
-    box-sizing: border-box;
     gap: var(--space-6);
-  }
-
-  &__progress {
-    display: flex;
-    gap: var(--space-2);
-  }
-
-  &__dot {
-    flex: 1;
-    height: 4px;
-    border-radius: var(--radius-pill);
-    background: rgba(244, 246, 239, 0.15);
-    transition: background-color 200ms ease;
-  }
-
-  &__dot--done {
-    background: var(--kora-turf);
-  }
-
-  &__dot--active {
-    background: var(--kora-bib-gold);
   }
 
   &__step {
     display: flex;
     flex-direction: column;
-    flex: 1;
     gap: var(--space-4);
   }
 
   &__eyebrow {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-lg);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--kora-turf);
@@ -76,91 +73,184 @@
     opacity: 0.75;
   }
 
-  // Chips (opciones predeterminadas)
   &__chips {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-3);
     margin-top: var(--space-2);
   }
 
   &__chip {
-    min-width: 56px;
-    height: 48px;
-    padding: 0 var(--space-4);
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(244, 246, 239, 0.25);
-    background: transparent;
-    color: var(--kora-chalk);
-    font-family: var(--font-body);
-    font-size: var(--font-size-lg);
-    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 128px;
+    padding: var(--space-4) var(--space-2);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.18);
+    background: rgba(244, 246, 239, 0.03);
+    color: var(--kora-turf);
     cursor: pointer;
     transition:
       background-color 150ms ease,
       border-color 150ms ease,
-      color 150ms ease;
+      color 150ms ease,
+      transform 150ms ease;
+
+    &:hover {
+      border-color: var(--kora-turf);
+      transform: translateY(-2px);
+    }
+
+    &--active {
+      background: var(--kora-turf);
+      border-color: var(--kora-turf);
+      color: var(--kora-chalk);
+    }
   }
 
-  &__chip--active {
-    background: var(--kora-turf);
-    border-color: var(--kora-turf);
+  &__shirts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-1) var(--space-2);
+    max-width: 100px;
+    font-size: 1.1rem;
+  }
+
+  &__number {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
     color: var(--kora-chalk);
   }
 
-  // Stepper manual (+/-)
-  &__stepper {
+  &__stepperCard {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-6);
-    margin-top: var(--space-4);
-    padding: var(--space-5) 0;
+    gap: var(--space-5);
+    margin-top: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.18);
+    background: rgba(244, 246, 239, 0.03);
   }
 
-  &__stepperButton {
-    width: 56px;
-    height: 56px;
+  &__divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(244, 246, 239, 0.15);
+  }
+
+  &__button {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     border: 1px solid var(--kora-turf);
     background: transparent;
     color: var(--kora-turf);
-    font-family: var(--font-body);
-    font-size: 1.75rem;
+    font-size: 1.1rem;
     line-height: 1;
     cursor: pointer;
     transition:
       background-color 150ms ease,
       color 150ms ease,
       opacity 150ms ease;
+
+    &:hover:not(:disabled) {
+      background: var(--kora-turf);
+      color: var(--kora-chalk);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
   }
 
-  &__stepperButton:hover:not(:disabled) {
-    background: var(--kora-turf);
-    color: var(--kora-chalk);
-  }
-
-  &__stepperButton:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  &__stepperValue {
+  &__value {
     min-width: 3ch;
     text-align: center;
     font-family: var(--font-display);
-    font-size: 3rem;
+    font-size: 2.75rem;
     color: var(--kora-chalk);
   }
 
-  // Formulario de alta de jugadores
-  &__playerForm {
+  &__helper {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.65;
+
+    & span {
+      color: var(--kora-turf);
+      margin: 0 var(--space-1);
+    }
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  &__option {
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(244, 246, 239, 0.18);
+    background: rgba(244, 246, 239, 0.03);
+    color: var(--kora-chalk);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      transform 150ms ease;
+
+    &:hover {
+      border-color: var(--kora-turf);
+      transform: translateY(-2px);
+    }
+
+    &--active {
+      background: var(--kora-turf);
+      border-color: var(--kora-turf);
+    }
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.85;
+    flex-wrap: wrap;
+
+    & strong {
+      color: var(--kora-turf);
+      font-weight: 700;
+    }
+  }
+
+  &__form {
     display: flex;
     gap: var(--space-3);
     margin-top: var(--space-2);
   }
 
   &__input {
+    width: 1px;
     flex: 1;
     height: 48px;
     padding: 0 var(--space-4);
@@ -170,18 +260,19 @@
     color: var(--kora-chalk);
     font-family: var(--font-body);
     font-size: var(--font-size-base);
+
+    &:focus {
+      outline: none;
+      border-color: var(--kora-turf);
+    }
+
+    &::placeholder {
+      color: rgba(244, 246, 239, 0.45);
+    }
   }
 
-  &__input:focus {
-    outline: none;
-    border-color: var(--kora-turf);
-  }
-
-  &__input::placeholder {
-    color: rgba(244, 246, 239, 0.45);
-  }
-
-  &__addButton {
+  &__add {
+    height: 48px;
     padding: 0 var(--space-5);
     border-radius: var(--radius-md);
     border: 1px solid var(--kora-turf);
@@ -191,6 +282,12 @@
     font-size: var(--font-size-base);
     font-weight: 600;
     cursor: pointer;
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
   }
 
   &__counter {
@@ -199,15 +296,99 @@
     font-size: var(--font-size-sm);
     color: var(--kora-chalk);
     opacity: 0.6;
+
+    &--complete {
+      color: var(--kora-turf);
+      opacity: 1;
+    }
+
+    &--overflow {
+      color: var(--kora-bib-coral);
+      opacity: 1;
+    }
   }
 
-  &__counter--complete {
-    color: var(--kora-bib-gold);
-    opacity: 1;
+  &__pasteToggle {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    border: none;
+    background: transparent;
+    color: var(--kora-turf);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
   }
 
-  // Lista de jugadores acumulados
-  &__playerList {
+  &__pasteToggle:hover {
+    text-decoration: underline;
+  }
+
+  &__pasteForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: rgba(244, 246, 239, 0.05);
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: var(--kora-turf);
+    }
+
+    &::placeholder {
+      color: rgba(244, 246, 239, 0.4);
+    }
+  }
+
+  &__pasteActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  &__pasteCancel {
+    height: 48px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 246, 239, 0.25);
+    background: transparent;
+    color: var(--kora-chalk);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+  }
+
+  &__alert {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 90, 54, 0.4);
+    background: rgba(255, 90, 54, 0.1);
+    color: var(--kora-bib-coral);
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+  }
+
+  &__list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -218,7 +399,7 @@
     overflow-y: auto;
   }
 
-  &__playerItem {
+  &__player {
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -227,14 +408,14 @@
     background: rgba(244, 246, 239, 0.05);
   }
 
-  &__playerName {
+  &__name {
     flex: 1;
     font-family: var(--font-body);
     font-size: var(--font-size-base);
     color: var(--kora-chalk);
   }
 
-  &__goalkeeperButton {
+  &__goalkeeper {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -242,20 +423,36 @@
     background: transparent;
     font-size: 1rem;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0.7;
     transition:
       opacity 150ms ease,
       border-color 150ms ease,
       background-color 150ms ease;
+
+    & i {
+      color: var(--kora-chalk);
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 1;
+    }
+
+    &:disabled {
+      opacity: 0.1;
+    }
+
+    &--active {
+      opacity: 1;
+      border-color: var(--kora-bib-gold);
+      background: rgba(255, 182, 39, 0.15);
+
+      & i {
+        color: var(--kora-bib-gold);
+      }
+    }
   }
 
-  &__goalkeeperButton--active {
-    opacity: 1;
-    border-color: var(--kora-bib-gold);
-    background: rgba(255, 182, 39, 0.15);
-  }
-
-  &__removeButton {
+  &__remove {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -266,16 +463,18 @@
     font-size: 1.25rem;
     line-height: 1;
     cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+      color: var(--kora-bib-coral);
+    }
   }
 
-  &__removeButton:hover {
-    opacity: 1;
-    color: var(--kora-bib-coral);
-  }
-
-  // Acciones (Volver / Continuar)
   &__actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-content: space-between;
     gap: var(--space-3);
     margin-top: auto;
     padding-top: var(--space-4);
@@ -283,8 +482,11 @@
 
   &__secondaryButton,
   &__primaryButton {
-    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     height: 50px;
+    padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
     font-family: var(--font-body);
     font-size: 1rem;
@@ -300,25 +502,26 @@
     border: 1px solid rgba(244, 246, 239, 0.25);
     background: transparent;
     color: var(--kora-chalk);
-  }
 
-  &__secondaryButton:hover {
-    border-color: var(--kora-chalk);
+    &:hover {
+      border-color: var(--kora-chalk);
+    }
   }
 
   &__primaryButton {
     border: 1px solid var(--kora-turf);
     background: var(--kora-turf);
     color: var(--kora-chalk);
-  }
+    justify-content: end;
 
-  &__primaryButton:hover:not(:disabled) {
-    transform: translateY(-3px);
-  }
+    &:hover:not(:disabled) {
+      transform: translateY(-3px);
+    }
 
-  &__primaryButton:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-    transform: none;
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
   }
 }

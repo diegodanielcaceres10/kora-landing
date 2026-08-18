@@ -1,4 +1,5 @@
 // styles/tokens/_index.scss
+@forward "breakpoints";
 @forward "colors";
 @forward "typography";
 @forward "spacing";
@@ -13,17 +14,30 @@
   --kora-turf: #{colors.$kora-turf};
   --kora-chalk: #{colors.$kora-chalk};
   --kora-ink: #{colors.$kora-ink};
+
   --kora-bib-gold: #{colors.$kora-bib-gold};
   --kora-bib-coral: #{colors.$kora-bib-coral};
   --kora-bib-sky: #{colors.$kora-bib-sky};
   --kora-bib-violet: #{colors.$kora-bib-violet};
+  --kora-bib-green: #{colors.$kora-bib-green};
+
+  --kora-gradient-primary: #{colors.$kora-gradient-primary};
 
   // Typography
   --font-display: #{typography.$font-display};
   --font-body: #{typography.$font-body};
   --font-mono: #{typography.$font-mono};
 
+  --font-size-xs: #{typography.$font-size-xs};
+  --font-size-sm: #{typography.$font-size-sm};
+  --font-size-base: #{typography.$font-size-base};
+  --font-size-lg: #{typography.$font-size-lg};
+  --font-size-xl: #{typography.$font-size-xl};
+  --font-size-2xl: #{typography.$font-size-2xl};
+
   // Spacing
+  --page-max-width: #{spacing.$page-max-width};
+
   --space-1: #{spacing.$space-1};
   --space-2: #{spacing.$space-2};
   --space-3: #{spacing.$space-3};

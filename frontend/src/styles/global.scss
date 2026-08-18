@@ -21,6 +21,19 @@ body {
 
 button {
   font-family: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+button:active,
+button:hover {
+  outline: 0;
+}
+
+:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 img {
@@ -32,4 +45,28 @@ img {
 
 #root {
   min-height: 100dvh;
+}
+
+.custom_scroll {
+  overflow-y: auto;
+  padding-right: var(--space-4);
+  scrollbar-width: thin;
+  scrollbar-color: var(--kora-turf) transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--kora-turf);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--kora-turf);
+  }
 }

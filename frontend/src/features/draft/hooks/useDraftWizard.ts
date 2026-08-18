@@ -73,10 +73,27 @@ export function useDraftWizard() {
           id: `player-${Date.now()}-${prev.players.length}`,
           name: trimmed,
           teamId: null,
+          spotIndex: null,
           isGoalkeeper: false,
         },
       ],
     }));
+  }, []);
+
+  const addPlayers = useCallback((names: string[]) => {
+    const trimmed = names.map((n) => n.trim()).filter(Boolean);
+    if (trimmed.length === 0) return;
+
+    setConfig((prev) => {
+      const newPlayers: Player[] = trimmed.map((name, i) => ({
+        id: `player-${Date.now()}-${prev.players.length + i}`,
+        name,
+        teamId: null,
+        spotIndex: null,
+        isGoalkeeper: false,
+      }));
+      return { ...prev, players: [...prev.players, ...newPlayers] };
+    });
   }, []);
 
   const removePlayer = useCallback((id: string) => {
@@ -87,14 +104,26 @@ export function useDraftWizard() {
   }, []);
 
   const toggleGoalkeeper = useCallback((id: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      players: prev.players.map((player) =>
-        player.id === id
-          ? { ...player, isGoalkeeper: !player.isGoalkeeper }
-          : player,
-      ),
-    }));
+    setConfig((prev) => {
+      const target = prev.players.find((player) => player.id === id);
+      if (!target) return prev;
+
+      if (!target.isGoalkeeper) {
+        const goalkeeperCount = prev.players.filter(
+          (player) => player.isGoalkeeper,
+        ).length;
+        if (goalkeeperCount >= prev.teamCount) return prev;
+      }
+
+      return {
+        ...prev,
+        players: prev.players.map((player) =>
+          player.id === id
+            ? { ...player, isGoalkeeper: !player.isGoalkeeper }
+            : player,
+        ),
+      };
+    });
   }, []);
 
   const setAssignmentMode = useCallback((mode: AssignmentMode) => {
@@ -105,44 +134,118 @@ export function useDraftWizard() {
     setConfig((prev) => ({
       ...prev,
       assignmentMode: null,
-      players: prev.players.map((player) => ({ ...player, teamId: null })),
+      players: prev.players.map((player) => ({
+        ...player,
+        teamId: null,
+        spotIndex: null,
+      })),
     }));
   }, []);
 
-  const assignPlayerToTeam = useCallback((playerId: string, teamId: string) => {
-    setConfig((prev) => {
-      const teamCapacity = prev.playersPerTeam;
-      const currentTeamSize = prev.players.filter(
-        (p) => p.teamId === teamId && p.id !== playerId,
-      ).length;
+  const assignPlayerToTeam = useCallback(
+    (playerId: string, teamId: string, spotIndex?: number) => {
+      setConfig((prev) => {
+        const target = prev.players.find((p) => p.id === playerId);
+        if (!target) return prev;
 
-      if (currentTeamSize >= teamCapacity) return prev;
+        const teammates = prev.players.filter(
+          (p) => p.teamId === teamId && p.id !== playerId,
+        );
+        const isMovingWithinTeam = target.teamId === teamId;
 
-      return {
-        ...prev,
-        players: prev.players.map((player) =>
-          player.id === playerId ? { ...player, teamId } : player,
-        ),
-      };
-    });
-  }, []);
+        if (
+          target.isGoalkeeper &&
+          spotIndex !== undefined &&
+          spotIndex !== 0
+        ) {
+          return prev;
+        }
+
+        const requestedSpotIndex = target.isGoalkeeper ? 0 : spotIndex;
+
+        if (!isMovingWithinTeam && teammates.length >= prev.playersPerTeam) {
+          return prev;
+        }
+
+        if (target.isGoalkeeper && teammates.some((p) => p.isGoalkeeper)) {
+          return prev;
+        }
+
+        if (
+          requestedSpotIndex !== undefined &&
+          teammates.some((player) => player.spotIndex === requestedSpotIndex)
+        ) {
+          return prev;
+        }
+
+        const occupiedSpots = new Set(
+          teammates
+            .map((player) => player.spotIndex)
+            .filter((index): index is number => index !== null),
+        );
+        const nextFreeSpot = Array.from(
+          { length: prev.playersPerTeam },
+          (_, index) => index,
+        ).find((index) => !occupiedSpots.has(index));
+
+        const nextSpotIndex =
+          requestedSpotIndex ??
+          (isMovingWithinTeam && target.spotIndex !== null
+            ? target.spotIndex
+            : nextFreeSpot);
+
+        if (nextSpotIndex === undefined) return prev;
+
+        return {
+          ...prev,
+          players: prev.players.map((player) =>
+            player.id === playerId
+              ? { ...player, teamId, spotIndex: nextSpotIndex }
+              : player,
+          ),
+        };
+      });
+    },
+    [],
+  );
 
   const unassignPlayer = useCallback((playerId: string) => {
     setConfig((prev) => ({
       ...prev,
       players: prev.players.map((player) =>
-        player.id === playerId ? { ...player, teamId: null } : player,
+        player.id === playerId
+          ? { ...player, teamId: null, spotIndex: null }
+          : player,
       ),
     }));
   }, []);
 
   const drawTeams = useCallback(() => {
     setConfig((prev) => {
-      const shuffled = [...prev.players].sort(() => Math.random() - 0.5);
-      const playersWithTeams: Player[] = shuffled.map((player, i) => ({
-        ...player,
-        teamId: prev.teams[i % prev.teams.length].id,
-      }));
+      const shuffle = <T>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
+
+      const goalkeepers = shuffle(prev.players.filter((p) => p.isGoalkeeper));
+      const rest = shuffle(prev.players.filter((p) => !p.isGoalkeeper));
+
+      let teamIndex = 0;
+      const nextSpotByTeam = prev.teams.reduce<Record<string, number>>(
+        (acc, team) => ({ ...acc, [team.id]: 0 }),
+        {},
+      );
+      const assignRoundRobin = (list: Player[]): Player[] =>
+        list.map((player) => {
+          const team = prev.teams[teamIndex % prev.teams.length];
+          teamIndex += 1;
+          const spotIndex = nextSpotByTeam[team.id];
+          nextSpotByTeam[team.id] += 1;
+          return { ...player, teamId: team.id, spotIndex };
+        });
+
+      const playersWithTeams = [
+        ...assignRoundRobin(goalkeepers),
+        ...assignRoundRobin(rest),
+      ];
+
       return { ...prev, players: playersWithTeams };
     });
   }, []);
@@ -160,6 +263,7 @@ export function useDraftWizard() {
     setTeamCount,
     setPlayersPerTeam,
     addPlayer,
+    addPlayers,
     removePlayer,
     toggleGoalkeeper,
     setAssignmentMode,

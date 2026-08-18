@@ -5,24 +5,42 @@ import styles from "../setup.module.scss";
 interface StepPlayerListProps {
   players: Player[];
   totalNeeded: number;
+  teamCount: number;
   onAdd: (name: string) => void;
+  onAddMany: (names: string[]) => void;
   onRemove: (id: string) => void;
   onToggleGoalkeeper: (id: string) => void;
   onNext: () => void;
   onBack: () => void;
 }
 
+function parsePastedNames(raw: string): string[] {
+  return raw
+    .split(/\r?\n/)
+    .flatMap((line) => line.split(/[,;]/))
+    .map((line) => line.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, "").trim())
+    .filter(Boolean);
+}
+
 export function StepPlayerList({
   players,
   totalNeeded,
+  teamCount,
   onAdd,
+  onAddMany,
   onRemove,
   onToggleGoalkeeper,
   onNext,
   onBack,
 }: StepPlayerListProps) {
   const [name, setName] = useState("");
-  const isComplete = totalNeeded > 0 && players.length >= totalNeeded;
+  const [isPasteMode, setIsPasteMode] = useState(false);
+  const [pasteText, setPasteText] = useState("");
+
+  const overflowCount = Math.max(0, players.length - totalNeeded);
+  const isComplete = totalNeeded > 0 && players.length === totalNeeded;
+  const goalkeeperCount = players.filter((p) => p.isGoalkeeper).length;
+  const goalkeeperCapReached = goalkeeperCount >= teamCount;
   const canAdd = totalNeeded === 0 || players.length < totalNeeded;
 
   const handleSubmit = (event: FormEvent) => {
@@ -32,64 +50,134 @@ export function StepPlayerList({
     setName("");
   };
 
+  const handlePasteSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    const names = parsePastedNames(pasteText);
+    if (names.length === 0) return;
+    onAddMany(names);
+    setPasteText("");
+    setIsPasteMode(false);
+  };
+
   return (
-    <section className={styles.setup__step}>
+    <section
+      className={[styles.setup__step, styles["setup__step--narrow"]].join(" ")}
+    >
       <p className={styles.setup__eyebrow}>Paso 3 de 3</p>
       <h1 className={styles.setup__title}>Sumá a los jugadores</h1>
       <p className={styles.setup__description}>
-        Tocá el guante para marcar quién ataja.
+        Tocá el guante para marcar quién ataja. Máximo {teamCount}{" "}
+        {teamCount === 1 ? "arquero" : "arqueros"} ({goalkeeperCount}/
+        {teamCount}).
       </p>
 
-      <form className={styles.setup__playerForm} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className={styles.setup__input}
-          placeholder={
-            canAdd ? "Nombre del jugador" : "Ya completaste la lista"
-          }
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          disabled={!canAdd}
-        />
-        <button
-          type="submit"
-          className={styles.setup__addButton}
-          disabled={!canAdd}
-        >
-          Agregar
-        </button>
-      </form>
+      {!isPasteMode && (
+        <>
+          <form className={styles.setup__form} onSubmit={handleSubmit}>
+            <input
+              name="player"
+              type="text"
+              className={styles.setup__input}
+              placeholder={
+                canAdd ? "Nombre del jugador" : "Ya completaste la lista"
+              }
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              disabled={!canAdd}
+            />
+            <button
+              type="submit"
+              className={styles.setup__add}
+              disabled={!canAdd}
+            >
+              Agregar
+            </button>
+          </form>
+
+          <button
+            type="button"
+            className={styles.setup__pasteToggle}
+            onClick={() => setIsPasteMode(true)}
+          >
+            <i className="fa-solid fa-paste"></i>
+            ¿Tenés una lista? Pegala acá
+          </button>
+        </>
+      )}
+
+      {isPasteMode && (
+        <form className={styles.setup__pasteForm} onSubmit={handlePasteSubmit}>
+          <textarea
+            className={styles.setup__textarea}
+            placeholder={
+              "Pegá los nombres, uno por línea\nJuan Pérez\nAna Gómez\nLuis Díaz"
+            }
+            value={pasteText}
+            onChange={(event) => setPasteText(event.target.value)}
+            rows={5}
+            autoFocus
+          />
+          <div className={styles.setup__pasteActions}>
+            <button
+              type="button"
+              className={styles.setup__pasteCancel}
+              onClick={() => {
+                setIsPasteMode(false);
+                setPasteText("");
+              }}
+            >
+              Cancelar
+            </button>
+            <button type="submit" className={styles.setup__add}>
+              Cargar lista
+            </button>
+          </div>
+        </form>
+      )}
 
       <p
         className={[
           styles.setup__counter,
           isComplete ? styles["setup__counter--complete"] : "",
+          overflowCount > 0 ? styles["setup__counter--overflow"] : "",
         ].join(" ")}
       >
         {players.length} / {totalNeeded} jugadores
       </p>
 
-      <ul className={styles.setup__playerList}>
+      {overflowCount > 0 && (
+        <p className={styles.setup__alert}>
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          Tenés {overflowCount}{" "}
+          {overflowCount === 1 ? "jugador de más" : "jugadores de más"}. Sacá a
+          los que sobran para poder continuar.
+        </p>
+      )}
+
+      <ul className={styles.setup__list}>
         {players.map((player) => (
-          <li key={player.id} className={styles.setup__playerItem}>
-            <span className={styles.setup__playerName}>{player.name}</span>
+          <li key={player.id} className={styles.setup__player}>
+            <span className={styles.setup__name}>{player.name}</span>
             <button
               type="button"
               className={[
-                styles.setup__goalkeeperButton,
-                player.isGoalkeeper
-                  ? styles["setup__goalkeeperButton--active"]
-                  : "",
+                styles.setup__goalkeeper,
+                player.isGoalkeeper ? styles["setup__goalkeeper--active"] : "",
               ].join(" ")}
               onClick={() => onToggleGoalkeeper(player.id)}
+              disabled={!player.isGoalkeeper && goalkeeperCapReached}
               aria-pressed={player.isGoalkeeper}
-              title="Marcar como arquero"
+              title={
+                !player.isGoalkeeper && goalkeeperCapReached
+                  ? `Ya marcaste el máximo de arqueros (${teamCount})`
+                  : "Marcar como arquero"
+              }
             >
-              🧤
+              <i className={"fa-solid fa-mitten"}></i>
             </button>
             <button
               type="button"
-              className={styles.setup__removeButton}
+              className={styles.setup__remove}
               onClick={() => onRemove(player.id)}
               aria-label={`Quitar a ${player.name}`}
             >
@@ -105,6 +193,7 @@ export function StepPlayerList({
           className={styles.setup__secondaryButton}
           onClick={onBack}
         >
+          <i className="fa-solid fa-arrow-left"></i>
           Volver
         </button>
         <button
@@ -114,6 +203,7 @@ export function StepPlayerList({
           disabled={!isComplete}
         >
           Continuar
+          <i className="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </section>

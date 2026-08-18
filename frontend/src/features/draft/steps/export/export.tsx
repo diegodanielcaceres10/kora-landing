@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import type { DraftConfig } from "../../draft.types";
+import { AppHeader } from "../../components/AppHeader";
 import { ResultCard } from "./components/ResultCard";
 import styles from "./export.module.scss";
 
@@ -15,22 +16,35 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDownload = async () => {
-    if (!cardRef.current) return;
+  const shareTitle = "Sorteo de equipos Kora";
+  const shareText = "Mirá cómo quedaron los equipos del partido.";
+  const shareUrl = window.location.href;
 
+  const createResultImage = async () => {
+    if (!cardRef.current) return null;
+
+    return toPng(cardRef.current, {
+      pixelRatio: 2,
+      cacheBust: true,
+      backgroundColor: "#063326",
+    });
+  };
+
+  const downloadImage = (dataUrl: string) => {
+    const link = document.createElement("a");
+    link.download = "kora-equipos.png";
+    link.href = dataUrl;
+    link.click();
+  };
+
+  const handleDownload = async () => {
     setIsExporting(true);
     setError(null);
 
     try {
-      const dataUrl = await toPng(cardRef.current, {
-        pixelRatio: 2,
-        cacheBust: true,
-      });
-
-      const link = document.createElement("a");
-      link.download = "kora-equipos.png";
-      link.href = dataUrl;
-      link.click();
+      const dataUrl = await createResultImage();
+      if (!dataUrl) return;
+      downloadImage(dataUrl);
     } catch {
       setError("No se pudo generar la imagen. Probá de nuevo.");
     } finally {
@@ -38,47 +52,137 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
     }
   };
 
+  const handleNativeShare = async () => {
+    setIsExporting(true);
+    setError(null);
+
+    try {
+      const dataUrl = await createResultImage();
+      if (!dataUrl) return;
+
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], "kora-equipos.png", { type: "image/png" });
+      const shareData = {
+        title: shareTitle,
+        text: shareText,
+        files: [file],
+      };
+
+      if (navigator.canShare?.(shareData)) {
+        await navigator.share(shareData);
+        return;
+      }
+
+      downloadImage(dataUrl);
+    } catch {
+      setError("No se pudo preparar la imagen para compartir.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleShareWhatsApp = () => {
+    const message = encodeURIComponent(`${shareText} ${shareUrl}`);
+    window.open(`https://wa.me/?text=${message}`, "_blank", "noreferrer");
+  };
+
+  const handleShareFacebook = () => {
+    const url = encodeURIComponent(shareUrl);
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      "_blank",
+      "noreferrer",
+    );
+  };
+
   return (
-    <main className={styles.export}>
-      <div className={styles.export__content}>
-        <p className={styles.export__eyebrow}>Etapa 2 · Paso 3</p>
-        <h1 className={styles.export__title}>Equipos confirmados</h1>
-        <p className={styles.export__description}>
-          Revisá el resultado y descargalo como imagen para compartirlo.
-        </p>
+    <main className={styles.page}>
+      <AppHeader />
 
-        <div className={styles.export__preview}>
-          <ResultCard ref={cardRef} config={config} />
+      <section className={styles.export}>
+        <div className={styles.export__content}>
+          <div className={styles.export__preview}>
+            <ResultCard ref={cardRef} config={config} />
+          </div>
+
+          {error && <p className={styles.export__error}>{error}</p>}
+
+          <section className={styles.export__share}>
+            <h1 className={styles.export__shareTitle}>Compartir resultado</h1>
+            <div className={styles.export__shareActions}>
+              <button
+                type="button"
+                className={[
+                  styles.export__shareButton,
+                  styles["export__shareButton--whatsapp"],
+                ].join(" ")}
+                onClick={handleShareWhatsApp}
+              >
+                <span>
+                  <i className="fa-brands fa-whatsapp"></i>
+                </span>
+                WhatsApp
+              </button>
+              <button
+                type="button"
+                className={[
+                  styles.export__shareButton,
+                  styles["export__shareButton--instagram"],
+                ].join(" ")}
+                onClick={handleNativeShare}
+                disabled={isExporting}
+              >
+                <span>
+                  <i className="fa-brands fa-instagram"></i>
+                </span>
+                Instagram
+              </button>
+              <button
+                type="button"
+                className={[
+                  styles.export__shareButton,
+                  styles["export__shareButton--facebook"],
+                ].join(" ")}
+                onClick={handleShareFacebook}
+              >
+                <span>
+                  <i className="fa-brands fa-facebook-f"></i>
+                </span>
+                Facebook
+              </button>
+              <button
+                type="button"
+                className={styles.export__shareButton}
+                onClick={handleDownload}
+                disabled={isExporting}
+              >
+                <span>
+                  <i className="fa-solid fa-download"></i>
+                </span>
+                Descargar
+              </button>
+            </div>
+          </section>
+
+          <div className={styles.export__actions}>
+            <button
+              type="button"
+              className={styles.export__secondaryButton}
+              onClick={onBack}
+            >
+              <i className="fa-solid fa-arrow-left"></i>
+              Volver
+            </button>
+            <button
+              type="button"
+              className={styles.export__primaryButton}
+              onClick={onReset}
+            >
+              Nuevo sorteo
+            </button>
+          </div>
         </div>
-
-        {error && <p className={styles.export__error}>{error}</p>}
-
-        <div className={styles.export__actions}>
-          <button
-            type="button"
-            className={styles.export__secondaryButton}
-            onClick={onBack}
-          >
-            Volver
-          </button>
-          <button
-            type="button"
-            className={styles.export__primaryButton}
-            onClick={handleDownload}
-            disabled={isExporting}
-          >
-            {isExporting ? "Generando..." : "Descargar imagen"}
-          </button>
-        </div>
-
-        <button
-          type="button"
-          className={styles.export__resetButton}
-          onClick={onReset}
-        >
-          Empezar un sorteo nuevo
-        </button>
-      </div>
+      </section>
     </main>
   );
 }

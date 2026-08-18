@@ -3,6 +3,8 @@ import type { DraftConfig, SetupSubStep } from "../../draft.types";
 import { StepTeamCount } from "./components/StepTeamCount";
 import { StepPlayersPerTeam } from "./components/StepPlayersPerTeam";
 import { StepPlayerList } from "./components/StepPlayerList";
+import { AppHeader } from "../../components/AppHeader";
+import { StepProgress, type GlobalStep } from "../../components/StepProgress";
 import styles from "./setup.module.scss";
 
 interface StepSetupProps {
@@ -10,19 +12,27 @@ interface StepSetupProps {
   setTeamCount: (count: number) => void;
   setPlayersPerTeam: (count: number) => void;
   addPlayer: (name: string) => void;
+  addPlayers: (names: string[]) => void;
   removePlayer: (id: string) => void;
   toggleGoalkeeper: (id: string) => void;
   onNext: () => void;
   onBack: () => void;
 }
 
-const SUB_STEP_ORDER: SetupSubStep[] = ["teams", "playersPerTeam", "players"];
+const SUB_STEP_ORDER: SetupSubStep[] = ["teams", "playersPerTeam", "list"];
+
+const GLOBAL_STEP_BY_SUB_STEP: Record<SetupSubStep, GlobalStep> = {
+  teams: 1,
+  playersPerTeam: 2,
+  list: 3,
+};
 
 export function StepSetup({
   config,
   setTeamCount,
   setPlayersPerTeam,
   addPlayer,
+  addPlayers,
   removePlayer,
   toggleGoalkeeper,
   onNext,
@@ -48,51 +58,52 @@ export function StepSetup({
   };
 
   return (
-    <main className={styles.setup}>
-      <div className={styles.setup__content}>
-        <div className={styles.setup__progress} aria-hidden="true">
-          {SUB_STEP_ORDER.map((item, i) => (
-            <span
-              key={item}
-              className={[
-                styles.setup__dot,
-                i === subStepIndex ? styles["setup__dot--active"] : "",
-                i < subStepIndex ? styles["setup__dot--done"] : "",
-              ].join(" ")}
+    <main className={styles.page}>
+      <AppHeader />
+
+      <section className={styles.setup}>
+        <StepProgress
+          currentStep={GLOBAL_STEP_BY_SUB_STEP[subStep]}
+          summaries={
+            config.teamCount ? { 1: `${config.teamCount} equipos` } : undefined
+          }
+        />
+
+        <div className={styles.setup__content}>
+          {subStep === "teams" && (
+            <StepTeamCount
+              teamCount={config.teamCount}
+              onChange={setTeamCount}
+              onNext={goToNextSubStep}
+              onBack={goToPrevSubStep}
             />
-          ))}
+          )}
+
+          {subStep === "playersPerTeam" && (
+            <StepPlayersPerTeam
+              teamCount={config.teamCount}
+              playersPerTeam={config.playersPerTeam}
+              onChange={setPlayersPerTeam}
+              onNext={goToNextSubStep}
+              onBack={goToPrevSubStep}
+            />
+          )}
+
+          {subStep === "list" && (
+            <StepPlayerList
+              players={config.players}
+              totalNeeded={config.teamCount * config.playersPerTeam}
+              teamCount={config.teamCount}
+              onAdd={addPlayer}
+              onAddMany={addPlayers}
+              onRemove={removePlayer}
+              onToggleGoalkeeper={toggleGoalkeeper}
+              onNext={goToNextSubStep}
+              onBack={goToPrevSubStep}
+            />
+          )}
         </div>
-
-        {subStep === "teams" && (
-          <StepTeamCount
-            teamCount={config.teamCount}
-            onChange={setTeamCount}
-            onNext={goToNextSubStep}
-            onBack={goToPrevSubStep}
-          />
-        )}
-
-        {subStep === "playersPerTeam" && (
-          <StepPlayersPerTeam
-            playersPerTeam={config.playersPerTeam}
-            onChange={setPlayersPerTeam}
-            onNext={goToNextSubStep}
-            onBack={goToPrevSubStep}
-          />
-        )}
-
-        {subStep === "players" && (
-          <StepPlayerList
-            players={config.players}
-            totalNeeded={config.teamCount * config.playersPerTeam}
-            onAdd={addPlayer}
-            onRemove={removePlayer}
-            onToggleGoalkeeper={toggleGoalkeeper}
-            onNext={goToNextSubStep}
-            onBack={goToPrevSubStep}
-          />
-        )}
-      </div>
+      </section>
     </main>
   );
 }
