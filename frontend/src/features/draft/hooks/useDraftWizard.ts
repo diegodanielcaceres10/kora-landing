@@ -153,6 +153,16 @@ export function useDraftWizard() {
         );
         const isMovingWithinTeam = target.teamId === teamId;
 
+        if (
+          target.isGoalkeeper &&
+          spotIndex !== undefined &&
+          spotIndex !== 0
+        ) {
+          return prev;
+        }
+
+        const requestedSpotIndex = target.isGoalkeeper ? 0 : spotIndex;
+
         if (!isMovingWithinTeam && teammates.length >= prev.playersPerTeam) {
           return prev;
         }
@@ -162,8 +172,8 @@ export function useDraftWizard() {
         }
 
         if (
-          spotIndex !== undefined &&
-          teammates.some((player) => player.spotIndex === spotIndex)
+          requestedSpotIndex !== undefined &&
+          teammates.some((player) => player.spotIndex === requestedSpotIndex)
         ) {
           return prev;
         }
@@ -179,7 +189,7 @@ export function useDraftWizard() {
         ).find((index) => !occupiedSpots.has(index));
 
         const nextSpotIndex =
-          spotIndex ??
+          requestedSpotIndex ??
           (isMovingWithinTeam && target.spotIndex !== null
             ? target.spotIndex
             : nextFreeSpot);

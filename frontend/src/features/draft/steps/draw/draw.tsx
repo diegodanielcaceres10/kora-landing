@@ -126,6 +126,7 @@ export function StepDraw({
     config.teams[0]?.id ?? "",
   );
   const [dragOverZone, setDragOverZone] = useState<string | null>(null);
+  const [draggedPlayerId, setDraggedPlayerId] = useState<string | null>(null);
 
   const selectedTeam =
     config.teams.find((team) => team.id === selectedTeamId) ?? config.teams[0];
@@ -135,6 +136,9 @@ export function StepDraw({
   ).length;
   const availablePlayers = config.players.filter(
     (player) => player.teamId === null,
+  );
+  const draggedPlayer = config.players.find(
+    (player) => player.id === draggedPlayerId,
   );
   const availableCount = config.players.length - assignedCount;
   const allAssigned =
@@ -195,6 +199,12 @@ export function StepDraw({
   const handleDragStart = (event: DragEvent<HTMLElement>, playerId: string) => {
     event.dataTransfer.setData("text/plain", playerId);
     event.dataTransfer.effectAllowed = "move";
+    setDraggedPlayerId(playerId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedPlayerId(null);
+    setDragOverZone(null);
   };
 
   const handleDragOver = (event: DragEvent<HTMLElement>, zone: string) => {
@@ -298,6 +308,7 @@ export function StepDraw({
                       className={styles.draw__playerItem}
                       draggable
                       onDragStart={(event) => handleDragStart(event, player.id)}
+                      onDragEnd={handleDragEnd}
                     >
                       <i className="fa-solid fa-grip-vertical"></i>
                       <strong>{player.name}</strong>
@@ -395,6 +406,11 @@ export function StepDraw({
                   : undefined;
                 const spotZone =
                   selectedTeam && `${selectedTeam.id}-spot-${index}`;
+                const isDraggedPlayerOnSpot = player?.id === draggedPlayerId;
+                const canDropOnSpot =
+                  !draggedPlayer ||
+                  ((!draggedPlayer.isGoalkeeper || index === 0) &&
+                    (!player || isDraggedPlayerOnSpot));
 
                 return (
                   <div
@@ -404,21 +420,41 @@ export function StepDraw({
                       dragOverZone === spotZone
                         ? styles["draw__spot--over"]
                         : "",
+                      dragOverZone === spotZone && !canDropOnSpot
+                        ? styles["draw__spot--blocked"]
+                        : "",
                     ].join(" ")}
                     style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
                     draggable={Boolean(player)}
                     onDragStart={(event) => {
                       if (player) handleDragStart(event, player.id);
                     }}
+                    onDragEnd={handleDragEnd}
                     onDragOver={(event) => {
                       event.stopPropagation();
-                      if (spotZone) handleDragOver(event, spotZone);
+                      if (!spotZone) return;
+
+                      if (canDropOnSpot) {
+                        handleDragOver(event, spotZone);
+                        return;
+                      }
+
+                      event.dataTransfer.dropEffect = "none";
+                      if (dragOverZone !== spotZone) setDragOverZone(spotZone);
                     }}
                     onDragLeave={() => setDragOverZone(null)}
-                    onDrop={(event) =>
-                      selectedTeam &&
-                      handleDropOnTeam(event, selectedTeam, index)
-                    }
+                    onDrop={(event) => {
+                      if (!selectedTeam) return;
+
+                      if (!canDropOnSpot) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        setDragOverZone(null);
+                        return;
+                      }
+
+                      handleDropOnTeam(event, selectedTeam, index);
+                    }}
                   >
                     <span
                       className={[
