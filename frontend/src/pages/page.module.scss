@@ -1,0 +1,91 @@
+@use "../styles/tokens" as ds;
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      color-mix(in srgb, var(--kora-bib-green) 30%, transparent),
+      transparent 75%
+    ),
+    radial-gradient(
+      circle at 15% 15%,
+      color-mix(in srgb, var(--kora-bib-gold) 5%, transparent),
+      transparent 80%
+    ),
+    var(--kora-ink);
+  color: var(--kora-chalk);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: var(--page-max-width);
+  padding: 100px var(--space-4) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--kora-chalk);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  opacity: 0.75;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--kora-chalk);
+  opacity: 0.7;
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: opacity 150ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.footer {
+  width: 100%;
+  max-width: 1320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-top: 1px solid rgba(244, 246, 239, 0.1);
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    color: var(--kora-chalk);
+    opacity: 0.7;
+
+    & p {
+      margin: 0;
+    }
+  }
+}

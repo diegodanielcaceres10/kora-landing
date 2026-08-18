@@ -1,11 +1,15 @@
 // src/App.tsx
+import { Routes, Route } from "react-router-dom";
 import { useDraftWizard } from "./features/draft/hooks/useDraftWizard";
 import { StepWelcome } from "./features/draft/steps/welcome/welcome";
 import { StepSetup } from "./features/draft/steps/setup/setup";
 import { StepDraw } from "./features/draft/steps/draw/draw";
 import { StepExport } from "./features/draft/steps/export/export";
+import { HowItWorksPage } from "./pages/HowItWorksPage";
+import { FAQPage } from "./pages/FAQPage";
+import { AboutPage } from "./pages/AboutPage";
 
-function App() {
+function DraftWizard() {
   const wizard = useDraftWizard();
 
   switch (wizard.step) {
@@ -50,6 +54,17 @@ function App() {
         />
       );
   }
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<DraftWizard />} />
+      <Route path="/como-funciona" element={<HowItWorksPage />} />
+      <Route path="/faq" element={<FAQPage />} />
+      <Route path="/sobre-kora" element={<AboutPage />} />
+    </Routes>
+  );
 }
 
 export default App;

@@ -1,17 +1,18 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./AppHeader.module.scss";
 import koraIcon from "/favicon.png";
 
 const NAV_LINKS = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Cómo funciona", href: "#tutorial" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Sobre Kora", href: "#sobre-kora" },
+  { label: "Inicio", to: "/" },
+  { label: "Cómo funciona", to: "/como-funciona" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Sobre Kora", to: "/sobre-kora" },
 ];
 
 export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(NAV_LINKS[0].href);
+  const { pathname } = useLocation();
 
   return (
     <header className={styles.nav}>
@@ -30,7 +31,9 @@ export function AppHeader() {
               <i className="fa-solid fa-bars-staggered"></i>
             )}
           </button>
-          <img src={koraIcon} alt="" />
+          <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            <img src={koraIcon} alt="Kora" />
+          </Link>
         </div>
 
         <nav
@@ -39,21 +42,18 @@ export function AppHeader() {
             isMenuOpen ? styles["nav__links--open"] : "",
           ].join(" ")}
         >
-          {NAV_LINKS.map(({ label, href }) => (
-            <a
+          {NAV_LINKS.map(({ label, to }) => (
+            <Link
               key={label}
-              href={href}
+              to={to}
               className={[
                 styles.nav__link,
-                activeLink === href ? styles["nav__link--active"] : "",
+                pathname === to ? styles["nav__link--active"] : "",
               ].join(" ")}
-              onClick={() => {
-                setActiveLink(href);
-                setIsMenuOpen(false);
-              }}
+              onClick={() => setIsMenuOpen(false)}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </nav>
 
