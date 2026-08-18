@@ -95,16 +95,6 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
     );
   };
 
-  const handleCopyLink = async () => {
-    setError(null);
-
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-    } catch {
-      setError("No se pudo copiar el enlace.");
-    }
-  };
-
   return (
     <main className={styles.page}>
       <AppHeader />
@@ -159,16 +149,6 @@ export function StepExport({ config, onBack, onReset }: StepExportProps) {
                   <i className="fa-brands fa-facebook-f"></i>
                 </span>
                 Facebook
-              </button>
-              <button
-                type="button"
-                className={styles.export__shareButton}
-                onClick={handleCopyLink}
-              >
-                <span>
-                  <i className="fa-solid fa-link"></i>
-                </span>
-                Copiar enlace
               </button>
               <button
                 type="button"

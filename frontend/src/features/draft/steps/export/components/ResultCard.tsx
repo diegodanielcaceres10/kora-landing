@@ -10,13 +10,17 @@ interface ResultCardProps {
 
 export const ResultCard = forwardRef<HTMLDivElement, ResultCardProps>(
   function ResultCard({ config }, ref) {
+    const teamsColumnClass = [2, 4].includes(config.teams.length)
+      ? styles["card__teams--twoColumns"]
+      : styles["card__teams--threeColumns"];
+
     return (
       <div ref={ref} className={styles.card}>
         <div className={styles.card__header}>
           <img src={koraLogo} alt="Kora" className={styles.card__logo} />
         </div>
 
-        <div className={styles.card__teams}>
+        <div className={[styles.card__teams, teamsColumnClass].join(" ")}>
           {config.teams.map((team) => {
             const players = config.players
               .filter((player) => player.teamId === team.id)
