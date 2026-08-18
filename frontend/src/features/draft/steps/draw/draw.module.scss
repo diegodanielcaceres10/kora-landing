@@ -427,6 +427,17 @@
     gap: 4px;
     text-align: center;
     color: var(--kora-chalk);
+    cursor: grab;
+
+    &--over .draw__spotIcon {
+      border-color: var(--kora-bib-gold);
+      background: rgba(255, 182, 39, 0.18);
+      color: var(--kora-bib-gold);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
 
     & strong {
       font-family: var(--font-mono);

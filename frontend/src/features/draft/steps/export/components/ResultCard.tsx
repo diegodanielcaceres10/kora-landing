@@ -29,6 +29,11 @@ export const ResultCard = forwardRef<HTMLDivElement, ResultCardProps>(
               <ul className={styles.card__roster}>
                 {config.players
                   .filter((player) => player.teamId === team.id)
+                  .sort(
+                    (a, b) =>
+                      (a.spotIndex ?? Number.MAX_SAFE_INTEGER) -
+                      (b.spotIndex ?? Number.MAX_SAFE_INTEGER),
+                  )
                   .map((player) => (
                     <li key={player.id} className={styles.card__player}>
                       <span>{player.name}</span>

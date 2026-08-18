@@ -12,6 +12,7 @@ export interface Player {
   id: string;
   name: string;
   teamId: string | null;
+  spotIndex: number | null;
   isGoalkeeper: boolean;
 }
 

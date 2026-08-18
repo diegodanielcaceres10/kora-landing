@@ -73,6 +73,7 @@ export function useDraftWizard() {
           id: `player-${Date.now()}-${prev.players.length}`,
           name: trimmed,
           teamId: null,
+          spotIndex: null,
           isGoalkeeper: false,
         },
       ],
@@ -88,6 +89,7 @@ export function useDraftWizard() {
         id: `player-${Date.now()}-${prev.players.length + i}`,
         name,
         teamId: null,
+        spotIndex: null,
         isGoalkeeper: false,
       }));
       return { ...prev, players: [...prev.players, ...newPlayers] };
@@ -132,39 +134,78 @@ export function useDraftWizard() {
     setConfig((prev) => ({
       ...prev,
       assignmentMode: null,
-      players: prev.players.map((player) => ({ ...player, teamId: null })),
+      players: prev.players.map((player) => ({
+        ...player,
+        teamId: null,
+        spotIndex: null,
+      })),
     }));
   }, []);
 
-  const assignPlayerToTeam = useCallback((playerId: string, teamId: string) => {
-    setConfig((prev) => {
-      const target = prev.players.find((p) => p.id === playerId);
-      if (!target) return prev;
+  const assignPlayerToTeam = useCallback(
+    (playerId: string, teamId: string, spotIndex?: number) => {
+      setConfig((prev) => {
+        const target = prev.players.find((p) => p.id === playerId);
+        if (!target) return prev;
 
-      const teammates = prev.players.filter(
-        (p) => p.teamId === teamId && p.id !== playerId,
-      );
+        const teammates = prev.players.filter(
+          (p) => p.teamId === teamId && p.id !== playerId,
+        );
+        const isMovingWithinTeam = target.teamId === teamId;
 
-      if (teammates.length >= prev.playersPerTeam) return prev;
+        if (!isMovingWithinTeam && teammates.length >= prev.playersPerTeam) {
+          return prev;
+        }
 
-      if (target.isGoalkeeper && teammates.some((p) => p.isGoalkeeper)) {
-        return prev;
-      }
+        if (target.isGoalkeeper && teammates.some((p) => p.isGoalkeeper)) {
+          return prev;
+        }
 
-      return {
-        ...prev,
-        players: prev.players.map((player) =>
-          player.id === playerId ? { ...player, teamId } : player,
-        ),
-      };
-    });
-  }, []);
+        if (
+          spotIndex !== undefined &&
+          teammates.some((player) => player.spotIndex === spotIndex)
+        ) {
+          return prev;
+        }
+
+        const occupiedSpots = new Set(
+          teammates
+            .map((player) => player.spotIndex)
+            .filter((index): index is number => index !== null),
+        );
+        const nextFreeSpot = Array.from(
+          { length: prev.playersPerTeam },
+          (_, index) => index,
+        ).find((index) => !occupiedSpots.has(index));
+
+        const nextSpotIndex =
+          spotIndex ??
+          (isMovingWithinTeam && target.spotIndex !== null
+            ? target.spotIndex
+            : nextFreeSpot);
+
+        if (nextSpotIndex === undefined) return prev;
+
+        return {
+          ...prev,
+          players: prev.players.map((player) =>
+            player.id === playerId
+              ? { ...player, teamId, spotIndex: nextSpotIndex }
+              : player,
+          ),
+        };
+      });
+    },
+    [],
+  );
 
   const unassignPlayer = useCallback((playerId: string) => {
     setConfig((prev) => ({
       ...prev,
       players: prev.players.map((player) =>
-        player.id === playerId ? { ...player, teamId: null } : player,
+        player.id === playerId
+          ? { ...player, teamId: null, spotIndex: null }
+          : player,
       ),
     }));
   }, []);
@@ -177,11 +218,17 @@ export function useDraftWizard() {
       const rest = shuffle(prev.players.filter((p) => !p.isGoalkeeper));
 
       let teamIndex = 0;
+      const nextSpotByTeam = prev.teams.reduce<Record<string, number>>(
+        (acc, team) => ({ ...acc, [team.id]: 0 }),
+        {},
+      );
       const assignRoundRobin = (list: Player[]): Player[] =>
         list.map((player) => {
           const team = prev.teams[teamIndex % prev.teams.length];
           teamIndex += 1;
-          return { ...player, teamId: team.id };
+          const spotIndex = nextSpotByTeam[team.id];
+          nextSpotByTeam[team.id] += 1;
+          return { ...player, teamId: team.id, spotIndex };
         });
 
       const playersWithTeams = [

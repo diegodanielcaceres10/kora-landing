@@ -1,5 +1,10 @@
 import { useMemo, useState, type DragEvent } from "react";
-import type { AssignmentMode, DraftConfig, Team } from "../../draft.types";
+import type {
+  AssignmentMode,
+  DraftConfig,
+  Player,
+  Team,
+} from "../../draft.types";
 import { AppHeader } from "../../components/AppHeader";
 import styles from "./draw.module.scss";
 
@@ -7,7 +12,11 @@ interface StepDrawProps {
   config: DraftConfig;
   setAssignmentMode: (mode: AssignmentMode) => void;
   resetAssignments: () => void;
-  assignPlayerToTeam: (playerId: string, teamId: string) => void;
+  assignPlayerToTeam: (
+    playerId: string,
+    teamId: string,
+    spotIndex?: number,
+  ) => void;
   unassignPlayer: (playerId: string) => void;
   drawTeams: () => void;
   onNext: () => void;
@@ -145,6 +154,40 @@ export function StepDraw({
       ),
     [config.players, config.teams],
   );
+  const lineupsByTeam = useMemo(
+    () =>
+      config.teams.reduce<Record<string, Array<Player | undefined>>>(
+        (acc, team) => {
+          const lineup: Array<Player | undefined> = Array.from({
+            length: config.playersPerTeam,
+          });
+          const unplacedPlayers: Player[] = [];
+
+          (playersByTeam[team.id] ?? []).forEach((player) => {
+            if (
+              player.spotIndex !== null &&
+              player.spotIndex >= 0 &&
+              player.spotIndex < config.playersPerTeam &&
+              !lineup[player.spotIndex]
+            ) {
+              lineup[player.spotIndex] = player;
+              return;
+            }
+
+            unplacedPlayers.push(player);
+          });
+
+          unplacedPlayers.forEach((player) => {
+            const nextIndex = lineup.findIndex((spotPlayer) => !spotPlayer);
+            if (nextIndex !== -1) lineup[nextIndex] = player;
+          });
+
+          return { ...acc, [team.id]: lineup };
+        },
+        {},
+      ),
+    [config.playersPerTeam, config.teams, playersByTeam],
+  );
   const formationSpots =
     FORMATION_SPOTS_BY_SIZE[config.playersPerTeam] ??
     FORMATION_SPOTS_BY_SIZE[11];
@@ -159,15 +202,20 @@ export function StepDraw({
     if (dragOverZone !== zone) setDragOverZone(zone);
   };
 
-  const handleDropOnTeam = (event: DragEvent<HTMLElement>, team: Team) => {
+  const handleDropOnTeam = (
+    event: DragEvent<HTMLElement>,
+    team: Team,
+    spotIndex?: number,
+  ) => {
     event.preventDefault();
+    event.stopPropagation();
     const playerId = event.dataTransfer.getData("text/plain");
     setDragOverZone(null);
     if (!playerId) return;
 
     setAssignmentMode("manual");
     setSelectedTeamId(team.id);
-    assignPlayerToTeam(playerId, team.id);
+    assignPlayerToTeam(playerId, team.id, spotIndex);
   };
 
   const handleDropOnAvailable = (event: DragEvent<HTMLElement>) => {
@@ -343,14 +391,34 @@ export function StepDraw({
 
               {formationSpots.map((spot, index) => {
                 const player = selectedTeam
-                  ? playersByTeam[selectedTeam.id]?.[index]
+                  ? lineupsByTeam[selectedTeam.id]?.[index]
                   : undefined;
+                const spotZone =
+                  selectedTeam && `${selectedTeam.id}-spot-${index}`;
 
                 return (
                   <div
                     key={index}
-                    className={styles.draw__spot}
+                    className={[
+                      styles.draw__spot,
+                      dragOverZone === spotZone
+                        ? styles["draw__spot--over"]
+                        : "",
+                    ].join(" ")}
                     style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
+                    draggable={Boolean(player)}
+                    onDragStart={(event) => {
+                      if (player) handleDragStart(event, player.id);
+                    }}
+                    onDragOver={(event) => {
+                      event.stopPropagation();
+                      if (spotZone) handleDragOver(event, spotZone);
+                    }}
+                    onDragLeave={() => setDragOverZone(null)}
+                    onDrop={(event) =>
+                      selectedTeam &&
+                      handleDropOnTeam(event, selectedTeam, index)
+                    }
                   >
                     <span
                       className={[
