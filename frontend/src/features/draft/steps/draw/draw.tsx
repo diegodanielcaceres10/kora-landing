@@ -127,6 +127,10 @@ export function StepDraw({
   );
   const [dragOverZone, setDragOverZone] = useState<string | null>(null);
   const [draggedPlayerId, setDraggedPlayerId] = useState<string | null>(null);
+  const [spotModal, setSpotModal] = useState<{
+    teamId: string;
+    spotIndex: number;
+  } | null>(null);
 
   const selectedTeam =
     config.teams.find((team) => team.id === selectedTeamId) ?? config.teams[0];
@@ -195,6 +199,23 @@ export function StepDraw({
   const formationSpots =
     FORMATION_SPOTS_BY_SIZE[config.playersPerTeam] ??
     FORMATION_SPOTS_BY_SIZE[11];
+  const spotModalTeam = spotModal
+    ? config.teams.find((team) => team.id === spotModal.teamId)
+    : undefined;
+  const spotModalPlayer =
+    spotModal && spotModalTeam
+      ? lineupsByTeam[spotModalTeam.id]?.[spotModal.spotIndex]
+      : undefined;
+  const spotModalTeamHasGoalkeeper = spotModalTeam
+    ? playersByTeam[spotModalTeam.id]?.some((player) => player.isGoalkeeper)
+    : false;
+  const assignableModalPlayers = spotModal
+    ? availablePlayers.filter((player) => {
+        if (!player.isGoalkeeper) return true;
+        if (spotModal.spotIndex !== 0) return false;
+        return !spotModalTeamHasGoalkeeper;
+      })
+    : [];
 
   const handleDragStart = (event: DragEvent<HTMLElement>, playerId: string) => {
     event.dataTransfer.setData("text/plain", playerId);
@@ -246,6 +267,28 @@ export function StepDraw({
   const handleResetAssignments = () => {
     resetAssignments();
     setSelectedTeamId(config.teams[0]?.id ?? "");
+    setSpotModal(null);
+  };
+
+  const handleOpenSpotModal = (team: Team, spotIndex: number) => {
+    setSelectedTeamId(team.id);
+    setSpotModal({ teamId: team.id, spotIndex });
+  };
+
+  const handleAssignFromModal = (playerId: string) => {
+    if (!spotModalTeam || !spotModal) return;
+
+    setAssignmentMode("manual");
+    assignPlayerToTeam(playerId, spotModalTeam.id, spotModal.spotIndex);
+    setSpotModal(null);
+  };
+
+  const handleUnassignFromModal = () => {
+    if (!spotModalPlayer) return;
+
+    setAssignmentMode("manual");
+    unassignPlayer(spotModalPlayer.id);
+    setSpotModal(null);
   };
 
   return (
@@ -455,6 +498,9 @@ export function StepDraw({
 
                       handleDropOnTeam(event, selectedTeam, index);
                     }}
+                    onClick={() => {
+                      if (selectedTeam) handleOpenSpotModal(selectedTeam, index);
+                    }}
                   >
                     <span
                       className={[
@@ -509,6 +555,104 @@ export function StepDraw({
           </div>
         </div>
       </section>
+
+      {spotModal && spotModalTeam && (
+        <div
+          className={styles.draw__modalBackdrop}
+          role="presentation"
+          onClick={() => setSpotModal(null)}
+        >
+          <section
+            className={styles.draw__modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="spot-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className={styles.draw__modalHeader}>
+              <div>
+                <p>{spotModalTeam.name}</p>
+                <h2 id="spot-modal-title">Puesto {spotModal.spotIndex + 1}</h2>
+              </div>
+              <button
+                type="button"
+                className={styles.draw__modalClose}
+                aria-label="Cerrar"
+                onClick={() => setSpotModal(null)}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            {spotModalPlayer ? (
+              <div className={styles.draw__assignedPlayer}>
+                <span
+                  className={[
+                    styles.draw__assignedIcon,
+                    styles[`draw__assignedIcon--${spotModalTeam.color}`],
+                  ].join(" ")}
+                >
+                  <i
+                    className={
+                      spotModalPlayer.isGoalkeeper
+                        ? "fa-solid fa-mitten"
+                        : "fa-solid fa-shirt"
+                    }
+                  ></i>
+                </span>
+                <strong>{spotModalPlayer.name}</strong>
+                <button
+                  type="button"
+                  className={styles.draw__unassignButton}
+                  aria-label={`Desasignar a ${spotModalPlayer.name}`}
+                  onClick={handleUnassignFromModal}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            ) : (
+              <div className={styles.draw__modalListWrapper}>
+                <p className={styles.draw__modalHint}>
+                  Elegí un jugador disponible para asignarlo a este puesto.
+                </p>
+                {assignableModalPlayers.length > 0 ? (
+                  <ul
+                    className={[
+                      styles.draw__modalPlayerList,
+                      "custom_scroll",
+                    ].join(" ")}
+                  >
+                    {assignableModalPlayers.map((player) => (
+                      <li key={player.id}>
+                        <button
+                          type="button"
+                          className={styles.draw__modalPlayerButton}
+                          onClick={() => handleAssignFromModal(player.id)}
+                        >
+                          <span>
+                            <i
+                              className={
+                                player.isGoalkeeper
+                                  ? "fa-solid fa-mitten"
+                                  : "fa-solid fa-shirt"
+                              }
+                            ></i>
+                          </span>
+                          <strong>{player.name}</strong>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className={styles.draw__emptyModal}>
+                    No hay jugadores disponibles para este puesto.
+                  </p>
+                )}
+              </div>
+            )}
+          </section>
+        </div>
+      )}
     </main>
   );
 }
