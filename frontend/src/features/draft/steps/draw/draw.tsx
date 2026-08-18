@@ -626,7 +626,12 @@ export function StepDraw({
                       <li key={player.id}>
                         <button
                           type="button"
-                          className={styles.draw__modalPlayerButton}
+                          className={[
+                            styles.draw__modalPlayerButton,
+                            player.isGoalkeeper
+                              ? styles["draw__modalPlayerButton--keeper"]
+                              : "",
+                          ].join(" ")}
                           onClick={() => handleAssignFromModal(player.id)}
                         >
                           <span>

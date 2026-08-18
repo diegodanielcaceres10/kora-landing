@@ -665,6 +665,14 @@
       background: rgba(46, 125, 83, 0.16);
     }
 
+    & strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: var(--font-size-sm);
+    }
+
     & span {
       width: 32px;
       height: 32px;
@@ -675,12 +683,14 @@
       color: var(--kora-turf);
     }
 
-    & strong {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: var(--font-size-sm);
+    &--keeper {
+      border-color: rgba(111, 67, 153, 0.42);
+
+      & span {
+        background: rgba(111, 67, 153, 0.28);
+        border: 1px solid rgba(111, 67, 153, 0.5);
+        color: var(--kora-bib-violet);
+      }
     }
   }
 
