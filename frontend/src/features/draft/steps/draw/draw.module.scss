@@ -29,6 +29,7 @@
   align-items: center;
   padding: 100px 0 var(--space-2);
   height: 100vh;
+  box-sizing: border-box;
 
   @include ds.lg {
     height: auto;
@@ -42,6 +43,8 @@
     gap: var(--space-6);
     padding: var(--space-4) var(--space-6);
     height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
 
     @include ds.lg {
       grid-template-columns: 1fr;
@@ -57,6 +60,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+    min-height: 0;
   }
 
   &__intro {
@@ -122,6 +126,7 @@
 
   &__playerPanel {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -172,6 +177,7 @@
 
   &__playerList {
     flex: 1;
+    min-height: 0;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -233,6 +239,7 @@
   }
 
   &__dropHint {
+    flex-shrink: 0;
     min-height: 44px;
     border: 1px dashed rgba(244, 246, 239, 0.28);
     border-radius: var(--radius-md);
