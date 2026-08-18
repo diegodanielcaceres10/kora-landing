@@ -115,7 +115,7 @@ export function StepDraw({
         <div className={styles.draw__content}>
           <aside className={styles.draw__sidebar}>
             <div className={styles.draw__intro}>
-              <p className={styles.draw__eyebrow}>Etapa 2</p>
+              <p className={styles.draw__eyebrow}>Alineacion de equipos</p>
               <h1 className={styles.draw__title}>Asigná los jugadores</h1>
               <p className={styles.draw__description}>
                 Arrastrá cada jugador al equipo que quieras. También podés
@@ -273,8 +273,8 @@ export function StepDraw({
                       className={[
                         styles.draw__spotIcon,
                         player ? styles["draw__spotIcon--filled"] : "",
-                        player?.isGoalkeeper
-                          ? styles["draw__spotIcon--keeper"]
+                        player
+                          ? styles[`draw__spotIcon--${selectedTeam.color}`]
                           : "",
                       ].join(" ")}
                     >

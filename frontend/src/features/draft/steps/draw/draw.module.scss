@@ -27,17 +27,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px var(--space-6) var(--space-2) var(--space-6);
+  padding: 100px 0 var(--space-2);
   height: 100vh;
+
+  @include ds.lg {
+    height: auto;
+  }
 
   &__content {
     width: 100%;
     max-width: var(--page-max-width);
     display: grid;
-    grid-template-columns: minmax(340px, 470px) 1fr;
+    grid-template-columns: 40% 60%;
     gap: var(--space-6);
     padding: var(--space-4) var(--space-6);
     height: 100%;
+
+    @include ds.lg {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__sidebar,
@@ -128,6 +136,10 @@
     &--over {
       border-color: var(--kora-bib-gold);
       background: rgba(255, 182, 39, 0.08);
+    }
+
+    @include ds.lg {
+      display: none;
     }
   }
 
@@ -335,20 +347,6 @@
     flex: 1;
     border-radius: var(--radius-md);
     border: 1px solid rgba(244, 246, 239, 0.12);
-    background:
-      linear-gradient(0deg, rgba(244, 246, 239, 0.04) 1px, transparent 1px),
-      repeating-linear-gradient(
-        0deg,
-        rgba(46, 125, 83, 0.28) 0,
-        rgba(46, 125, 83, 0.28) 52px,
-        rgba(46, 125, 83, 0.18) 52px,
-        rgba(46, 125, 83, 0.18) 104px
-      ),
-      rgba(7, 70, 44, 0.72);
-    background-size:
-      100% 52px,
-      auto,
-      auto;
     overflow: hidden;
     transition:
       border-color 150ms ease,
@@ -367,7 +365,7 @@
     }
 
     &--violet {
-      box-shadow: inset 0 0 80px rgba(111, 67, 153, 0.12);
+      box-shadow: inset 0 0 80px rgba(111, 67, 153, 0.08);
     }
 
     &--over {
@@ -454,23 +452,40 @@
 
     &--filled {
       border-style: solid;
-      background: var(--kora-turf);
       color: var(--kora-chalk);
+      border-color: currentColor;
+      background: color-mix(in srgb, currentColor 24%, transparent);
     }
 
-    &--keeper {
-      background: var(--kora-bib-violet);
+    &--gold {
+      color: var(--kora-bib-gold);
+    }
+
+    &--coral {
+      color: var(--kora-bib-coral);
+    }
+
+    &--sky {
+      color: var(--kora-bib-sky);
+    }
+
+    &--violet {
+      color: var(--kora-bib-violet);
     }
   }
 
   &__actions {
     display: grid;
-    grid-template-columns: minmax(180px, 240px) 1fr minmax(180px, 240px);
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
     gap: var(--space-4);
 
     @include ds.md {
       grid-template-columns: 1fr;
+
+      & button {
+        justify-content: start;
+      }
     }
   }
 
