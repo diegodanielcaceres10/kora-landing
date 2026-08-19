@@ -24,13 +24,6 @@
     }
   }
 
-  &__sidebar,
-  &__board {
-    min-width: 0;
-    min-height: 0;
-    max-height: 100%;
-  }
-
   &__sidebar {
     display: flex;
     flex-direction: column;
