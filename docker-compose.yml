@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: kora-landing-frontend
+    container_name: kora-roster-frontend
     ports:
       - "4002:5173"
     volumes:
