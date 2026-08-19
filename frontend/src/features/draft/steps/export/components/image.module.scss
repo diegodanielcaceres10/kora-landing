@@ -71,30 +71,6 @@
     justify-content: center;
     gap: var(--space-3);
     background: color-mix(in srgb, currentColor 24%, transparent);
-
-    &--green {
-      color: var(--kora-bib-green);
-    }
-
-    &--gold {
-      color: var(--kora-bib-gold);
-    }
-
-    &--coral {
-      color: var(--kora-bib-coral);
-    }
-
-    &--sky {
-      color: var(--kora-bib-sky);
-    }
-
-    &--violet {
-      color: var(--kora-bib-violet);
-    }
-
-    &--white {
-      color: var(--kora-bib-white);
-    }
   }
 
   &__roster {

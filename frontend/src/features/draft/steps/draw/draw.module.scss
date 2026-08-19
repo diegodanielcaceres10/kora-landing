@@ -268,12 +268,11 @@
     border-radius: var(--radius-md);
     border: 1px solid rgba(244, 246, 239, 0.12);
     background: rgba(244, 246, 239, 0.04);
-    color: var(--kora-chalk);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    opacity: 0.5;
+    opacity: 0.2;
     transition:
       border-color 150ms ease,
       background-color 150ms ease,
@@ -284,11 +283,9 @@
     }
 
     & span {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
+      flex: 1;
       font-weight: 700;
+      text-align: left;
     }
 
     & strong {
@@ -296,35 +293,9 @@
       font-size: var(--font-size-sm);
     }
 
-    &--active,
-    &--over {
+    &:hover,
+    &--active {
       opacity: 1;
-    }
-  }
-
-  &__icon {
-    &--green i {
-      color: var(--kora-bib-green);
-    }
-
-    &--gold i {
-      color: var(--kora-bib-gold);
-    }
-
-    &--coral i {
-      color: var(--kora-bib-coral);
-    }
-
-    &--sky i {
-      color: var(--kora-bib-sky);
-    }
-
-    &--violet i {
-      color: var(--kora-bib-violet);
-    }
-
-    &--white i {
-      color: var(--kora-bib-white);
     }
   }
 
@@ -445,30 +416,6 @@
       border-color: currentColor;
       background: color-mix(in srgb, currentColor 24%, transparent);
       opacity: 1;
-    }
-
-    &--green {
-      color: var(--kora-bib-green);
-    }
-
-    &--gold {
-      color: var(--kora-bib-gold);
-    }
-
-    &--coral {
-      color: var(--kora-bib-coral);
-    }
-
-    &--sky {
-      color: var(--kora-bib-sky);
-    }
-
-    &--violet {
-      color: var(--kora-bib-violet);
-    }
-
-    &--white {
-      color: var(--kora-bib-white);
     }
   }
 
@@ -638,36 +585,12 @@
     place-items: center;
     background: rgba(244, 246, 239, 0.1);
     color: var(--kora-chalk);
-
-    &--green {
-      color: var(--kora-bib-green);
-    }
-
-    &--gold {
-      color: var(--kora-bib-gold);
-    }
-
-    &--coral {
-      color: var(--kora-bib-coral);
-    }
-
-    &--sky {
-      color: var(--kora-bib-sky);
-    }
-
-    &--violet {
-      color: var(--kora-bib-violet);
-    }
-
-    &--white {
-      color: var(--kora-bib-white);
-    }
   }
 
   &__unassignButton {
-    border: 1px solid rgba(255, 90, 54, 0.48);
-    background: rgba(255, 90, 54, 0.12);
-    color: var(--kora-warning);
+    border: 1px solid currentColor;
+    background: color-mix(in srgb, currentColor 24%, transparent);
+    color: var(--kora-error);
   }
 
   &__modalListWrapper {

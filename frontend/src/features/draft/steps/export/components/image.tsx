@@ -33,7 +33,7 @@ export const Image = forwardRef<HTMLDivElement, ImageProps>(function Image(
               <div
                 className={[
                   styles.image__teamHeader,
-                  styles[`image__teamHeader--${team.color}`],
+                  `custom-bib-${team.color}`,
                 ].join(" ")}
               >
                 <i className="fa-solid fa-shirt"></i>

@@ -383,11 +383,9 @@ export function StepDraw({
                     type="button"
                     className={[
                       styles.draw__team,
+                      filled ? `custom-bib-${team.color}` : undefined,
                       selectedTeam?.id === team.id
                         ? styles["draw__team--active"]
-                        : "",
-                      dragOverZone === team.id
-                        ? styles["draw__team--over"]
                         : "",
                     ].join(" ")}
                     onClick={() => setSelectedTeamId(team.id)}
@@ -395,21 +393,12 @@ export function StepDraw({
                     onDragLeave={() => setDragOverZone(null)}
                     onDrop={(event) => handleDropOnTeam(event, team)}
                   >
-                    <span
-                      className={[
-                        styles.draw__icon,
-                        filled
-                          ? styles[`draw__icon--${team.color}`]
-                          : undefined,
-                      ].join(" ")}
-                    >
-                      {filled ? (
-                        <i className="fa-solid fa-shirt"></i>
-                      ) : (
-                        <i className="fa-solid fa-triangle-exclamation"></i>
-                      )}
-                      {team.name}
-                    </span>
+                    {filled ? (
+                      <i className="fa-solid fa-shirt"></i>
+                    ) : (
+                      <i className="fa-solid fa-triangle-exclamation"></i>
+                    )}
+                    <span>{team.name}</span>
                     <strong>
                       {roster.length}/{config.playersPerTeam}
                     </strong>
@@ -496,9 +485,7 @@ export function StepDraw({
                       className={[
                         styles.draw__spotIcon,
                         player ? styles["draw__spotIcon--filled"] : "",
-                        player
-                          ? styles[`draw__spotIcon--${selectedTeam.color}`]
-                          : "",
+                        player ? `custom-bib-${selectedTeam.color}` : "",
                       ].join(" ")}
                     >
                       <i
@@ -575,12 +562,7 @@ export function StepDraw({
 
             {spotModalPlayer ? (
               <div className={styles.draw__assignedPlayer}>
-                <span
-                  className={[
-                    styles.draw__assignedIcon,
-                    styles[`draw__assignedIcon--${spotModalTeam.color}`],
-                  ].join(" ")}
-                >
+                <span className={styles.draw__assignedIcon}>
                   <i
                     className={
                       spotModalPlayer.isGoalkeeper

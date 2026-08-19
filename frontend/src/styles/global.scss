@@ -24,6 +24,7 @@ button {
   background: transparent;
   border: none;
   cursor: pointer;
+  color: inherit;
 }
 
 button:active,
@@ -69,4 +70,28 @@ img {
   &::-webkit-scrollbar-thumb:hover {
     background: var(--kora-turf);
   }
+}
+
+.custom-bib-green {
+  color: var(--kora-bib-green);
+}
+
+.custom-bib-gold {
+  color: var(--kora-bib-gold);
+}
+
+.custom-bib-coral {
+  color: var(--kora-bib-coral);
+}
+
+.custom-bib-sky {
+  color: var(--kora-bib-sky);
+}
+
+.custom-bib-violet {
+  color: var(--kora-bib-violet);
+}
+
+.custom-bib-white {
+  color: var(--kora-bib-white);
 }
