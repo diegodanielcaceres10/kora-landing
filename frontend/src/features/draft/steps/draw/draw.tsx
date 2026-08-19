@@ -376,13 +376,13 @@ export function StepDraw({
             <div className={styles.draw__teams}>
               {config.teams.map((team) => {
                 const roster = playersByTeam[team.id] ?? [];
+                const filled = roster.length === config.playersPerTeam;
                 return (
                   <button
                     key={team.id}
                     type="button"
                     className={[
                       styles.draw__team,
-                      styles[`draw__team--${team.color}`],
                       selectedTeam?.id === team.id
                         ? styles["draw__team--active"]
                         : "",
@@ -395,8 +395,19 @@ export function StepDraw({
                     onDragLeave={() => setDragOverZone(null)}
                     onDrop={(event) => handleDropOnTeam(event, team)}
                   >
-                    <span>
-                      <i className="fa-solid fa-shirt"></i>
+                    <span
+                      className={[
+                        styles.draw__icon,
+                        filled
+                          ? styles[`draw__icon--${team.color}`]
+                          : undefined,
+                      ].join(" ")}
+                    >
+                      {filled ? (
+                        <i className="fa-solid fa-shirt"></i>
+                      ) : (
+                        <i className="fa-solid fa-triangle-exclamation"></i>
+                      )}
                       {team.name}
                     </span>
                     <strong>
@@ -407,15 +418,7 @@ export function StepDraw({
               })}
             </div>
             <div
-              className={[
-                styles.draw__field,
-                selectedTeam
-                  ? styles[`draw__field--${selectedTeam.color}`]
-                  : "",
-                selectedTeam && dragOverZone === selectedTeam.id
-                  ? styles["draw__field--over"]
-                  : "",
-              ].join(" ")}
+              className={styles.draw__field}
               onDragOver={(event) =>
                 selectedTeam && handleDragOver(event, selectedTeam.id)
               }
