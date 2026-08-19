@@ -72,6 +72,10 @@
     gap: var(--space-3);
     background: color-mix(in srgb, currentColor 24%, transparent);
 
+    &--green {
+      color: var(--kora-bib-green);
+    }
+
     &--gold {
       color: var(--kora-bib-gold);
     }
@@ -86,6 +90,10 @@
 
     &--violet {
       color: var(--kora-bib-violet);
+    }
+
+    &--white {
+      color: var(--kora-bib-white);
     }
   }
 

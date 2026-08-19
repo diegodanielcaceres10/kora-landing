@@ -6,7 +6,14 @@ export type DrawSubStep = "mode" | "assign";
 
 export type AssignmentMode = "random" | "manual";
 
-export type TeamColor = "gold" | "coral" | "sky" | "violet";
+export type TeamColor =
+  | "green"
+  | "gold"
+  | "coral"
+  | "sky"
+  | "violet"
+  | "violet"
+  | "white";
 
 export interface Player {
   id: string;

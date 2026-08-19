@@ -11,8 +11,10 @@ export const DEFAULT_PLAYERS_PER_TEAM = 5;
 export const PLAYERS_PER_TEAM_OPTIONS = [5, 7, 11];
 
 export const TEAM_COLOR_PALETTE: TeamColor[] = [
+  "green",
   "gold",
   "coral",
   "sky",
   "violet",
+  "white",
 ];

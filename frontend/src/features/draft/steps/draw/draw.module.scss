@@ -303,6 +303,10 @@
   }
 
   &__icon {
+    &--green i {
+      color: var(--kora-bib-green);
+    }
+
     &--gold i {
       color: var(--kora-bib-gold);
     }
@@ -317,6 +321,10 @@
 
     &--violet i {
       color: var(--kora-bib-violet);
+    }
+
+    &--white i {
+      color: var(--kora-bib-white);
     }
   }
 
@@ -386,15 +394,15 @@
     cursor: grab;
 
     &--over .draw__spotIcon {
-      border-color: var(--kora-bib-gold);
+      border-color: var(--kora-success);
       background: rgba(255, 182, 39, 0.18);
-      color: var(--kora-bib-gold);
+      color: var(--kora-success);
     }
 
     &--blocked .draw__spotIcon {
-      border-color: var(--kora-bib-coral);
+      border-color: var(--kora-error);
       background: rgba(255, 90, 54, 0.14);
-      color: var(--kora-bib-coral);
+      color: var(--kora-error);
     }
 
     &:active {
@@ -424,7 +432,7 @@
     border-radius: 50%;
     border: 1px dashed rgba(244, 246, 239, 0.45);
     background: rgba(46, 125, 83, 0.1);
-    color: var(--kora-turf);
+    color: var(--kora-grey);
     display: grid;
     place-items: center;
     font-size: 1.5rem;
@@ -437,6 +445,10 @@
       border-color: currentColor;
       background: color-mix(in srgb, currentColor 24%, transparent);
       opacity: 1;
+    }
+
+    &--green {
+      color: var(--kora-bib-green);
     }
 
     &--gold {
@@ -453,6 +465,10 @@
 
     &--violet {
       color: var(--kora-bib-violet);
+    }
+
+    &--white {
+      color: var(--kora-bib-white);
     }
   }
 
@@ -623,6 +639,10 @@
     background: rgba(244, 246, 239, 0.1);
     color: var(--kora-chalk);
 
+    &--green {
+      color: var(--kora-bib-green);
+    }
+
     &--gold {
       color: var(--kora-bib-gold);
     }
@@ -638,12 +658,16 @@
     &--violet {
       color: var(--kora-bib-violet);
     }
+
+    &--white {
+      color: var(--kora-bib-white);
+    }
   }
 
   &__unassignButton {
     border: 1px solid rgba(255, 90, 54, 0.48);
     background: rgba(255, 90, 54, 0.12);
-    color: var(--kora-bib-coral);
+    color: var(--kora-warning);
   }
 
   &__modalListWrapper {
