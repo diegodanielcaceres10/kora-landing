@@ -4,7 +4,7 @@ import App from "./App";
 import "./styles/global.scss";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/kora-roster/">
     <App />
-  </BrowserRouter>
+  </BrowserRouter>,
 );
