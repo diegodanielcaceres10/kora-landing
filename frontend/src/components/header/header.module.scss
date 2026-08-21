@@ -19,28 +19,26 @@
     height: var(--header-height);
   }
 
-  &__logo {
+  &__menu {
     display: flex;
     gap: var(--space-4);
-    height: 64px;
 
-    @include ds.md {
-      height: 40px;
-    }
-  }
+    & button {
+      display: none;
+      z-index: 999;
 
-  &__menu {
-    display: none;
-    color: var(--kora-chalk);
-    z-index: 999;
-
-    @include ds.md {
-      display: flex;
+      @include ds.md {
+        display: flex;
+      }
     }
 
     & i {
       font-size: 40px;
     }
+  }
+
+  &__logo {
+    height: 40px;
   }
 
   &__links {

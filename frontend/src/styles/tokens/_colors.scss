@@ -5,7 +5,6 @@ $kora-pitch: #143028;
 $kora-turf: #2e7d53;
 $kora-chalk: #f4f6ef;
 $kora-ink: #051f19;
-$kora-ink: #051f19;
 
 $kora-success: #16a34a;
 $kora-error: #dc2626;
@@ -20,8 +19,4 @@ $kora-bib-sky: #4da6ff;
 $kora-bib-violet: #b18aff;
 $kora-bib-white: #f8fafc;
 
-$kora-gradient-primary: linear-gradient(
-  90deg,
-  $kora-bib-gold 0%,
-  $kora-bib-green 50%
-);
+$kora-gradient-primary: linear-gradient(90deg, $kora-bib-gold 0%, $kora-turf 50%);

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./welcome.module.scss";
-import koraLogo from "../../../../assets/kora-logo/kora-logo.png";
+import koraRosterLogo from "../../../../assets/logo/kora-roster-logo.png";
 import koraBibs from "../../../../assets/illustrations/kora-bibs.png";
 
 interface StepWelcomeProps {
@@ -14,7 +14,7 @@ export function StepWelcome({ onStart }: StepWelcomeProps) {
     <section className={styles.welcome}>
       <div className={styles.welcome__content}>
         <div className={styles.welcome__logo}>
-          <img src={koraLogo} alt="" />
+          <img src={koraRosterLogo} alt="" />
         </div>
         <h1 className={styles.welcome__title}>
           Sorteá los equipos
@@ -28,19 +28,11 @@ export function StepWelcome({ onStart }: StepWelcomeProps) {
         </p>
 
         <div className={styles.welcome__actions}>
-          <button
-            type="button"
-            className={styles.welcome__primaryButton}
-            onClick={onStart}
-          >
+          <button type="button" className={styles.welcome__primaryButton} onClick={onStart}>
             <i className="fa-solid fa-user-group"></i>
             Armar equipos ahora
           </button>
-          <button
-            type="button"
-            className={styles.welcome__secondaryButton}
-            onClick={() => navigate("/como-funciona")}
-          >
+          <button type="button" className={styles.welcome__secondaryButton} onClick={() => navigate("/como-funciona")}>
             <i className="fa-solid fa-circle-info"></i>
             Cómo funciona
           </button>

@@ -1,41 +1,27 @@
 import { forwardRef } from "react";
 import type { DraftConfig } from "../../../draft.types";
 import styles from "./image.module.scss";
-import koraLogo from "../../../../../assets/kora-logo/kora-logo.png";
+import koraRosterLogo from "../../../../../assets/logo/kora-roster-logo.png";
 import koraBibs from "../../../../../assets/illustrations/kora-bibs.png";
 
 interface ImageProps {
   config: DraftConfig;
 }
 
-export const Image = forwardRef<HTMLDivElement, ImageProps>(function Image(
-  { config },
-  ref,
-) {
+export const Image = forwardRef<HTMLDivElement, ImageProps>(function Image({ config }, ref) {
   return (
     <div ref={ref} className={styles.image}>
       <div className={styles.image__header}>
-        <img src={koraLogo} alt="Kora" className={styles.image__logo} />
+        <img src={koraRosterLogo} alt="Kora" className={styles.image__logo} />
       </div>
 
       <div className={styles.image__teams}>
         {config.teams.map((team) => {
-          const players = config.players
-            .filter((player) => player.teamId === team.id)
-            .sort(
-              (a, b) =>
-                (a.spotIndex ?? Number.MAX_SAFE_INTEGER) -
-                (b.spotIndex ?? Number.MAX_SAFE_INTEGER),
-            );
+          const players = config.players.filter((player) => player.teamId === team.id).sort((a, b) => (a.spotIndex ?? Number.MAX_SAFE_INTEGER) - (b.spotIndex ?? Number.MAX_SAFE_INTEGER));
 
           return (
             <div key={team.id} className={styles.image__team}>
-              <div
-                className={[
-                  styles.image__teamHeader,
-                  `custom-bib-${team.color}`,
-                ].join(" ")}
-              >
+              <div className={[styles.image__teamHeader, `custom-bib-${team.color}`].join(" ")}>
                 <i className="fa-solid fa-shirt"></i>
                 {team.name}
               </div>
@@ -45,10 +31,7 @@ export const Image = forwardRef<HTMLDivElement, ImageProps>(function Image(
                     <strong>{index + 1}</strong>
                     <span>{player.name}</span>
                     {player.isGoalkeeper && (
-                      <span
-                        className={styles.image__goalkeeperBadge}
-                        aria-label="Arquero"
-                      >
+                      <span className={styles.image__goalkeeperBadge} aria-label="Arquero">
                         <i className="fa-solid fa-mitten"></i>
                       </span>
                     )}
@@ -62,7 +45,7 @@ export const Image = forwardRef<HTMLDivElement, ImageProps>(function Image(
 
       <div className={styles.image__footer}>
         <div className={styles.image__credit}>
-          <img src={koraLogo} alt="" />
+          <img src={koraRosterLogo} alt="" />
           <span>Creado con Kora</span>
         </div>
         <img src={koraBibs} alt="" className={styles.image__bibs} />

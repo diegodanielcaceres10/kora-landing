@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./header.module.scss";
-import koraIcon from "/favicon.png";
+import kRosterLogo from "../../assets/logo/k-roster-logo.png";
 
 const NAV_LINKS = [
   { label: "Inicio", to: "/" },
@@ -17,41 +17,18 @@ export function Header() {
   return (
     <header className={styles.nav}>
       <div className={styles.nav__content}>
-        <div className={styles.nav__logo}>
-          <button
-            type="button"
-            className={styles.nav__menu}
-            aria-expanded={isMenuOpen}
-            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            {isMenuOpen ? (
-              <i className="fa-solid fa-xmark"></i>
-            ) : (
-              <i className="fa-solid fa-bars-staggered"></i>
-            )}
+        <div className={styles.nav__menu}>
+          <button type="button" aria-expanded={isMenuOpen} aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"} onClick={() => setIsMenuOpen((open) => !open)}>
+            {isMenuOpen ? <i className="fa-solid fa-xmark"></i> : <i className="fa-solid fa-bars-staggered"></i>}
           </button>
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>
-            <img src={koraIcon} alt="Kora" />
-          </Link>
+          <div className={styles.nav__logo}>
+            <img src={kRosterLogo} alt="" />
+          </div>
         </div>
 
-        <nav
-          className={[
-            styles.nav__links,
-            isMenuOpen ? styles["nav__links--open"] : "",
-          ].join(" ")}
-        >
+        <nav className={[styles.nav__links, isMenuOpen ? styles["nav__links--open"] : ""].join(" ")}>
           {NAV_LINKS.map(({ label, to }) => (
-            <Link
-              key={label}
-              to={to}
-              className={[
-                styles.nav__link,
-                pathname === to ? styles["nav__link--active"] : "",
-              ].join(" ")}
-              onClick={() => setIsMenuOpen(false)}
-            >
+            <Link key={label} to={to} className={[styles.nav__link, pathname === to ? styles["nav__link--active"] : ""].join(" ")} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>
           ))}
