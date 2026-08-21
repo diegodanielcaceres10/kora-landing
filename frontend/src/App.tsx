@@ -5,12 +5,12 @@ import { StepWelcome } from "./features/draft/steps/welcome/welcome";
 import { StepSetup } from "./features/draft/steps/setup/setup";
 import { StepDraw } from "./features/draft/steps/draw/draw";
 import { StepExport } from "./features/draft/steps/export/export";
-import { HowItWorksPage } from "./pages/HowItWorksPage";
-import { FAQPage } from "./pages/FAQPage";
-import { AboutPage } from "./pages/AboutPage";
-import { RegisterPage } from "./pages/RegisterPage";
-import { LoginPage } from "./pages/LoginPage";
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { TutorialPage } from "./pages/tutorial/TutorialPage";
+import { FAQPage } from "./pages/faq/FAQPage";
+import { AboutPage } from "./pages/about/AboutPage";
+import { LoginPage } from "./pages/auth/login/LoginPage";
+import { ForgotPage } from "./pages/auth/forgot/ForgotPage";
+import { RegisterPage } from "./pages/auth/register/RegisterPage";
 
 function DraftWizard() {
   const wizard = useDraftWizard();
@@ -49,13 +49,7 @@ function DraftWizard() {
       );
 
     case "export":
-      return (
-        <StepExport
-          config={wizard.config}
-          onBack={wizard.goBack}
-          onReset={wizard.reset}
-        />
-      );
+      return <StepExport config={wizard.config} onBack={wizard.goBack} onReset={wizard.reset} />;
   }
 }
 
@@ -64,12 +58,12 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<DraftWizard />} />
-        <Route path="/como-funciona" element={<HowItWorksPage />} />
+        <Route path="/tutorial" element={<TutorialPage />} />
         <Route path="/faq" element={<FAQPage />} />
-        <Route path="/sobre-kora" element={<AboutPage />} />
-        <Route path="/crear-cuenta" element={<RegisterPage />} />
-        <Route path="/iniciar-sesion" element={<LoginPage />} />
-        <Route path="/olvide-contrasena" element={<ForgotPasswordPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot" element={<ForgotPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import styles from "./RegisterPage.module.scss";
-import { useRegisterAccount } from "../features/account/hooks/useRegisterAccount";
+import { useRegisterAccount } from "../../../features/account/hooks/useRegisterAccount";
 
 export function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -18,29 +18,29 @@ export function RegisterPage() {
   };
 
   return (
-    <section className={styles.account}>
-      <div className={styles.account__content}>
+    <section className={styles.register}>
+      <div className={styles.register__content}>
         <header>
-          <p className={styles.account__eyebrow}>Crear cuenta</p>
-          <h1 className={styles.account__title}>Registrate en Kora</h1>
+          <p className={styles.register__eyebrow}>Crear cuenta</p>
+          <h1 className={styles.register__title}>Registrate en Kora</h1>
         </header>
 
         {isSuccess ? (
-          <div className={styles.account__success}>
-            <p className={styles.account__successTitle}>¡Cuenta creada!</p>
-            <p className={styles.account__successDescription}>Te enviamos un email a {email} para que crees tu contraseña y termines de activar la cuenta.</p>
+          <div className={styles.register__success}>
+            <p className={styles.register__successTitle}>¡Cuenta creada!</p>
+            <p className={styles.register__successDescription}>Te enviamos un email a {email} para que crees tu contraseña y termines de activar la cuenta.</p>
           </div>
         ) : (
-          <form className={styles.account__form} onSubmit={handleSubmit}>
-            <div className={styles.account__field}>
-              <label className={styles.account__label} htmlFor="name">
+          <form className={styles.register__form} onSubmit={handleSubmit}>
+            <div className={styles.register__field}>
+              <label className={styles.register__label} htmlFor="name">
                 Nombre
               </label>
               <input
                 id="name"
                 name="name"
                 type="text"
-                className={styles.account__input}
+                className={styles.register__input}
                 placeholder="Diego"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -49,15 +49,15 @@ export function RegisterPage() {
               />
             </div>
 
-            <div className={styles.account__field}>
-              <label className={styles.account__label} htmlFor="lastname">
+            <div className={styles.register__field}>
+              <label className={styles.register__label} htmlFor="lastname">
                 Apellido
               </label>
               <input
                 id="lastname"
                 name="lastname"
                 type="text"
-                className={styles.account__input}
+                className={styles.register__input}
                 placeholder="Caceres"
                 value={lastname}
                 onChange={(event) => setLastname(event.target.value)}
@@ -66,15 +66,15 @@ export function RegisterPage() {
               />
             </div>
 
-            <div className={styles.account__field}>
-              <label className={styles.account__label} htmlFor="email">
+            <div className={styles.register__field}>
+              <label className={styles.register__label} htmlFor="email">
                 Email
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
-                className={styles.account__input}
+                className={styles.register__input}
                 placeholder="vos@email.com"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -83,13 +83,13 @@ export function RegisterPage() {
               />
             </div>
 
-            <button type="submit" className={styles.account__submit} disabled={isLoading}>
-              {isLoading && <span className={styles.account__spinner} aria-hidden="true" />}
+            <button type="submit" className={styles.register__submit} disabled={isLoading}>
+              {isLoading && <span className={styles.register__spinner} aria-hidden="true" />}
               <span>{isLoading ? "Creando cuenta..." : "Crear cuenta"}</span>
             </button>
 
             {status === "error" && (
-              <p className={styles.account__error} role="alert">
+              <p className={styles.register__error} role="alert">
                 {error}
               </p>
             )}

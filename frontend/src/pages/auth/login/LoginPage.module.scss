@@ -1,6 +1,4 @@
-@use "../styles/tokens" as ds;
-
-.account {
+.login {
   width: 100%;
   max-width: 600px;
   display: flex;
@@ -108,27 +106,23 @@
     font-size: var(--font-size-lg);
   }
 
-  &__success {
+  &__links {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-4);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--kora-success);
-    background: rgba(22, 163, 74, 0.1);
-    color: var(--kora-chalk);
+    justify-content: space-between;
+    gap: var(--space-4);
     max-width: 420px;
   }
 
-  &__successTitle {
-    margin: 0;
-    font-weight: 600;
-  }
-
-  &__successDescription {
-    margin: 0;
+  &__link {
+    color: var(--kora-chalk);
+    opacity: 0.75;
     font-size: var(--font-size-sm);
-    opacity: 0.85;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 1;
+      color: var(--kora-bib-gold);
+    }
   }
 }
 
