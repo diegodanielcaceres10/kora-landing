@@ -1,12 +1,5 @@
 import { httpClient } from "../../lib/http/httpClient";
-import type {
-  Account,
-  ForgotPasswordPayload,
-  LoginPayload,
-  LoginResponse,
-  RegisterAccountPayload,
-  SetPasswordPayload,
-} from "./account.types";
+import type { Account, ForgotPasswordPayload, LoginPayload, LoginResponse, RegisterAccountPayload, SetPasswordPayload, Me } from "./account.types";
 
 export function registerAccount(payload: RegisterAccountPayload) {
   return httpClient.post<Account>("/auth/register", payload);
@@ -17,15 +10,13 @@ export function loginAccount(payload: LoginPayload) {
 }
 
 export function forgotPassword(payload: ForgotPasswordPayload) {
-  return httpClient.post<{ message: string; code: string }>(
-    "/auth/forgot-password",
-    payload,
-  );
+  return httpClient.post<{ message: string; code: string }>("/auth/forgot-password", payload);
 }
 
 export function setPassword(payload: SetPasswordPayload) {
-  return httpClient.post<{ message: string; code: string }>(
-    "/auth/set-password",
-    payload,
-  );
+  return httpClient.post<{ message: string; code: string }>("/auth/set-password", payload);
+}
+
+export function getMe() {
+  return httpClient.get<Me>("/auth/me", { auth: true });
 }

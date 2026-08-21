@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./header.module.scss";
 import kRosterLogo from "../../assets/logo/k-roster-logo.png";
+import { useAccount } from "../../features/account/AccountContext";
 
 const NAV_LINKS = [
   { label: "Inicio", to: "/" },
@@ -13,6 +14,11 @@ const NAV_LINKS = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const { account, ensureLoaded } = useAccount();
+
+  useEffect(() => {
+    ensureLoaded();
+  }, [ensureLoaded]);
 
   return (
     <header className={styles.nav}>
@@ -34,10 +40,17 @@ export function Header() {
           ))}
         </nav>
 
-        <Link key="Ingresar" to="/login" className={styles.nav__login}>
-          <i className="fa-regular fa-circle-user"></i>
-          <span>Ingresar</span>
-        </Link>
+        {account ? (
+          <div className={styles.nav__user}>
+            <i className="fa-regular fa-circle-user"></i>
+            <span>{account.name}</span>
+          </div>
+        ) : (
+          <Link key="Ingresar" to="/login" className={styles.nav__login}>
+            <i className="fa-regular fa-circle-user"></i>
+            <span>Ingresar</span>
+          </Link>
+        )}
       </div>
     </header>
   );

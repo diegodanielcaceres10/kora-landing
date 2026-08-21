@@ -5,10 +5,14 @@ export interface RegisterAccountPayload {
 }
 
 export interface Account {
-  id: string;
+  id: number;
   email: string;
   name: string;
   lastname: string;
+  phone: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginPayload {
@@ -17,8 +21,9 @@ export interface LoginPayload {
 }
 
 export interface LoginResponse {
-  token: string;
-  account: Account;
+  user: Account;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface ForgotPasswordPayload {
@@ -29,3 +34,5 @@ export interface SetPasswordPayload {
   token: string;
   password: string;
 }
+
+export type Me = Account;

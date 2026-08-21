@@ -3,6 +3,7 @@ import { loginAccount } from "../account.api";
 import type { LoginPayload, LoginResponse } from "../account.types";
 import { ApiError } from "../../../lib/http/httpClient";
 import { authStorage } from "../../../lib/auth/authStorage";
+import { useAccount } from "../AccountContext";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -24,22 +25,27 @@ function toErrorMessage(err: unknown): string {
 export function useLogin() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  const { setAccount } = useAccount();
 
-  const submit = useCallback(async (payload: LoginPayload) => {
-    setStatus("loading");
-    setError(null);
+  const submit = useCallback(
+    async (payload: LoginPayload) => {
+      setStatus("loading");
+      setError(null);
 
-    try {
-      const result = await loginAccount(payload);
-      authStorage.setToken(result.token);
-      setStatus("success");
-      return result;
-    } catch (err) {
-      setError(toErrorMessage(err));
-      setStatus("error");
-      return null;
-    }
-  }, []);
+      try {
+        const result = await loginAccount(payload);
+        authStorage.setTokens(result.accessToken, result.refreshToken);
+        setAccount(result.user);
+        setStatus("success");
+        return result;
+      } catch (err) {
+        setError(toErrorMessage(err));
+        setStatus("error");
+        return null;
+      }
+    },
+    [setAccount],
+  );
 
   return { submit, status, error };
 }
