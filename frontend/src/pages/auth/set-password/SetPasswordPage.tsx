@@ -81,7 +81,22 @@ export function SetPasswordPage() {
     submit(token, password);
   };
 
-  // ...bloque de "Link inválido" sin cambios...
+  if (!token) {
+    return (
+      <section className={styles.setPassword}>
+        <div className={styles.setPassword__content}>
+          <header>
+            <p className={styles.setPassword__eyebrow}>Crear contraseña</p>
+            <h1 className={styles.setPassword__title}>Link inválido</h1>
+          </header>
+          <p className={styles.setPassword__description}>Este link no tiene un token válido. Pedí uno nuevo desde "Olvidé mi contraseña" o revisá que copiaste la URL completa del mail.</p>
+          <Link to="/forgot" className={styles.setPassword__link}>
+            Ir a "Olvidé mi contraseña"
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.setPassword}>
