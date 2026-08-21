@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./header.module.scss";
 import kRosterLogo from "../../assets/logo/k-roster-logo.png";
+import { useRegisterAccount } from "../../features/account/hooks/useRegisterAccount";
 
 const NAV_LINKS = [
   { label: "Inicio", to: "/" },
@@ -10,9 +11,16 @@ const NAV_LINKS = [
   { label: "Sobre Kora", to: "/sobre-kora" },
 ];
 
+const TEST_PAYLOAD = {
+  email: "diegodanielcaceres10@gmail.com",
+  name: "Diego",
+  lastname: "Caceres",
+};
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const { submit, status, error } = useRegisterAccount();
 
   return (
     <header className={styles.nav}>
@@ -34,10 +42,11 @@ export function Header() {
           ))}
         </nav>
 
-        <button type="button" className={styles.nav__button}>
+        <button type="button" className={styles.nav__button} disabled={status === "loading"} onClick={() => submit(TEST_PAYLOAD)}>
           <i className="fa-regular fa-circle-user"></i>
-          <span>Iniciar sesión</span>
+          <span>{status === "loading" ? "Creando cuenta..." : "Iniciar sesión"}</span>
         </button>
+        {status === "error" && <span className={styles.nav__error}>{error}</span>}
       </div>
     </header>
   );

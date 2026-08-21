@@ -2,12 +2,14 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export class ApiError extends Error {
   readonly status: number;
+  readonly code?: string;
   readonly body: unknown;
 
-  constructor(status: number, message: string, body: unknown) {
+  constructor(status: number, message: string, code: string | undefined, body: unknown) {
     super(message);
     this.name = "ApiError";
     this.status = status;
+    this.code = code;
     this.body = body;
   }
 }
@@ -35,11 +37,13 @@ async function request<TResponse>(
   const data = isJson ? await response.json() : undefined;
 
   if (!response.ok) {
+    const errorBody =
+      data && typeof data === "object" ? (data as Record<string, unknown>) : undefined;
     const message =
-      (data && typeof data === "object" && "message" in data
-        ? String((data as { message: unknown }).message)
-        : undefined) ?? `Request failed with status ${response.status}`;
-    throw new ApiError(response.status, message, data);
+      (errorBody?.message ? String(errorBody.message) : undefined) ??
+      `Request failed with status ${response.status}`;
+    const code = errorBody?.code ? String(errorBody.code) : undefined;
+    throw new ApiError(response.status, message, code, data);
   }
 
   return data as TResponse;

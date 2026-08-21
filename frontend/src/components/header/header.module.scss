@@ -139,4 +139,9 @@
       }
     }
   }
+
+  &__error {
+    color: var(--kora-error);
+    font-size: var(--font-size-sm);
+  }
 }
