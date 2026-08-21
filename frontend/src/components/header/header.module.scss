@@ -116,6 +116,15 @@
     color: var(--kora-chalk);
     font-size: var(--font-size-sm);
     font-weight: 500;
+    transition:
+      transform 150ms ease,
+      border-color 150ms ease;
+
+    &:hover {
+      border-color: var(--kora-bib-gold);
+      color: var(--kora-bib-gold);
+      transform: translateY(-3px);
+    }
 
     @include ds.md {
       border-color: transparent;

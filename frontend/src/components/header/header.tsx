@@ -34,10 +34,10 @@ export function Header() {
           ))}
         </nav>
 
-        {/* <button type="button" className={styles.nav__button}>
+        <button type="button" className={styles.nav__button}>
           <i className="fa-regular fa-circle-user"></i>
           <span>Iniciar sesión</span>
-        </button> */}
+        </button>
       </div>
     </header>
   );
