@@ -37,6 +37,12 @@ button:hover {
   outline-offset: 2px;
 }
 
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
 img {
   display: block;
   width: 100%;

@@ -51,15 +51,17 @@
   }
 
   &__links {
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     gap: var(--space-6);
     transition: transform 150ms ease;
 
     @include ds.md {
       position: absolute;
       flex-direction: column;
+      justify-content: center;
       font-size: var(--font-size-xl);
       width: 100%;
       height: 50vh;
@@ -77,10 +79,7 @@
   }
 
   &__link {
-    color: var(--kora-chalk);
     opacity: 0.75;
-    cursor: pointer;
-    text-decoration: none;
 
     &:hover {
       opacity: 1;
@@ -105,7 +104,7 @@
     }
   }
 
-  &__button {
+  &__login {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -113,9 +112,7 @@
     padding: 0 var(--space-4);
     border-radius: var(--radius-pill);
     border: 1px solid var(--kora-turf);
-    color: var(--kora-chalk);
     font-size: var(--font-size-sm);
-    font-weight: 500;
     transition:
       transform 150ms ease,
       border-color 150ms ease;
@@ -127,11 +124,11 @@
     }
 
     @include ds.md {
-      border-color: transparent;
+      border: none;
       justify-self: end;
 
       & i {
-        font-size: 40px;
+        font-size: 30px;
       }
 
       & span {

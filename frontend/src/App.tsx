@@ -8,6 +8,7 @@ import { StepExport } from "./features/draft/steps/export/export";
 import { HowItWorksPage } from "./pages/HowItWorksPage";
 import { FAQPage } from "./pages/FAQPage";
 import { AboutPage } from "./pages/AboutPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 function DraftWizard() {
   const wizard = useDraftWizard();
@@ -64,6 +65,7 @@ function App() {
         <Route path="/como-funciona" element={<HowItWorksPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/sobre-kora" element={<AboutPage />} />
+        <Route path="/crear-cuenta" element={<RegisterPage />} />
       </Route>
     </Routes>
   );
