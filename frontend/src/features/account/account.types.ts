@@ -24,3 +24,8 @@ export interface LoginResponse {
 export interface ForgotPasswordPayload {
   email: string;
 }
+
+export interface SetPasswordPayload {
+  token: string;
+  password: string;
+}

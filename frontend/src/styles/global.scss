@@ -50,6 +50,19 @@ img {
   object-fit: contain;
 }
 
+input {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    box-shadow: 0 0 0 1000px var(--kora-pitch) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--kora-pitch) inset;
+    -webkit-text-fill-color: var(--kora-chalk);
+    caret-color: var(--kora-chalk);
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
 #root {
   min-height: 100dvh;
 }

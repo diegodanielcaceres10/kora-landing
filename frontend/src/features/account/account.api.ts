@@ -5,6 +5,7 @@ import type {
   LoginPayload,
   LoginResponse,
   RegisterAccountPayload,
+  SetPasswordPayload,
 } from "./account.types";
 
 export function registerAccount(payload: RegisterAccountPayload) {
@@ -18,6 +19,13 @@ export function loginAccount(payload: LoginPayload) {
 export function forgotPassword(payload: ForgotPasswordPayload) {
   return httpClient.post<{ message: string; code: string }>(
     "/auth/forgot-password",
+    payload,
+  );
+}
+
+export function setPassword(payload: SetPasswordPayload) {
+  return httpClient.post<{ message: string; code: string }>(
+    "/auth/set-password",
     payload,
   );
 }
