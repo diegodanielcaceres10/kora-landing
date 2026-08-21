@@ -10,4 +10,8 @@
   height: var(--footer-height);
   font-size: var(--font-size-sm);
   opacity: 0.7;
+
+  @include ds.md {
+    height: 50px;
+  }
 }

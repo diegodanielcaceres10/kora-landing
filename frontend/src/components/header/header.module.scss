@@ -17,11 +17,16 @@
     margin: auto;
     padding: 0 var(--space-6);
     height: var(--header-height);
+
+    @include ds.md {
+      height: 50px;
+    }
   }
 
   &__menu {
     display: flex;
-    gap: var(--space-4);
+    align-items: center;
+    gap: var(--space-6);
 
     & button {
       display: none;
@@ -33,12 +38,16 @@
     }
 
     & i {
-      font-size: 40px;
+      font-size: 30px;
     }
   }
 
   &__logo {
-    height: 40px;
+    height: 30px;
+
+    @include ds.md {
+      height: 25px;
+    }
   }
 
   &__links {
