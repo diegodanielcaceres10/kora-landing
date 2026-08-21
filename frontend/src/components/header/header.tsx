@@ -34,7 +34,7 @@ export function Header() {
           ))}
         </nav>
 
-        <Link key="Ingresar" to="crear-cuenta" className={styles.nav__login}>
+        <Link key="Ingresar" to="/iniciar-sesion" className={styles.nav__login}>
           <i className="fa-regular fa-circle-user"></i>
           <span>Ingresar</span>
         </Link>
