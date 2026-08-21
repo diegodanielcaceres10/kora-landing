@@ -10,6 +10,7 @@ import { FAQPage } from "./pages/FAQPage";
 import { AboutPage } from "./pages/AboutPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { LoginPage } from "./pages/LoginPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 
 function DraftWizard() {
   const wizard = useDraftWizard();
@@ -68,6 +69,7 @@ function App() {
         <Route path="/sobre-kora" element={<AboutPage />} />
         <Route path="/crear-cuenta" element={<RegisterPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
+        <Route path="/olvide-contrasena" element={<ForgotPasswordPage />} />
       </Route>
     </Routes>
   );

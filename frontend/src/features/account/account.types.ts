@@ -20,3 +20,7 @@ export interface LoginResponse {
   token: string;
   account: Account;
 }
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
